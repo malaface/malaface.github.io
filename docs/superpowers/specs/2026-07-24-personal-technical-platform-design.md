@@ -1,0 +1,158 @@
+# Plataforma de marca personal técnica — Diseño
+
+## Propósito
+
+Transformar `malaface.github.io` en la plataforma pública de Luis Miguel Malacara Jiménez: un espacio para compartir automatizaciones, desarrollo de producto, IA aplicada, aprendizaje y conocimiento técnico reutilizable. No es un CV ni una copia del vault privado.
+
+La promesa editorial es: **“Construyo sistemas claros para aprender, automatizar y compartir.”**
+
+## Evidencia usada
+
+El diseño se apoya exclusivamente en fuentes revisadas durante el descubrimiento:
+
+- `malaface.github.io` tiene una página HTML mínima y GitHub Pages activo, sin framework ni Actions.
+- Los repositorios locales muestran trabajo en Next.js, TypeScript, Tailwind, Supabase, RLS, pruebas unitarias/E2E/accesibilidad, Kotlin/libGDX y documentación de producto.
+- El vault usa Markdown curado con frontmatter OKF, wikilinks, índices y timestamps. Los temas publicables detectados son knowledge systems, AI coding/context engineering, automatización, seguridad de aplicaciones, desarrollo de producto y documentación.
+- El inventario público de GitHub contiene 19 repositorios visibles; los forks, repositorios de curso y proyectos no seleccionados no formarán parte del escaparate por defecto.
+- La única URL de Vercel confirmada durante el descubrimiento es `https://t-ethos.vercel.app`; la CLI de Vercel no tiene credenciales en este entorno.
+
+No se infiere experiencia adicional a partir de estas fuentes.
+
+## Límites de seguridad y privacidad
+
+Estas reglas son invariantes de producto y se validan en CI:
+
+1. El sitio **no accede al vault de Obsidian**. No habrá scripts de lectura, checkout del vault, tokens de vault, rutas de vault ni sincronización con Obsidian.
+2. Las notas públicas vivirán en este repositorio, bajo `src/content/`. Publicar una idea derivada del vault requiere crear o editar manualmente un archivo público en este repositorio.
+3. El sitio solo puede decir que Obsidian se usa como sistema personal de conocimiento y explicar aplicaciones generales de ese método. No muestra contenido, enlaces, nombres de notas, grafo, rutas, metadatos ni datos del vault.
+4. Se prohíben NOC, Data Center, infraestructura operativa, servidores, topologías, runbooks privados, incidentes, credenciales, IPs, sistemas internos, clientes, finanzas, diario y datos personales sensibles.
+5. El importador de contenido no existe por diseño. Un validador local/CI revisa el contenido que ya vive en el repositorio y rechaza patrones, categorías y rutas bloqueados.
+6. GitHub y Vercel solo suministran metadatos públicos o credenciales explícitamente configuradas por el usuario; nunca se publican secretos ni URLs de preview.
+
+## Decisión tecnológica
+
+Se utilizará **Astro** con salida estática (`output: 'static'`).
+
+Astro es la opción elegida porque entrega HTML estático adecuado para GitHub Pages, tiene colecciones de contenido tipadas, soporta Markdown/MDX, sitemap, RSS y SEO sin un servidor de aplicación, y permite mantener JavaScript mínimo. Las islas se limitan a la búsqueda y al selector de tema.
+
+No se elegirá Next.js export estático porque su complejidad no aporta valor en un sitio editorial sin backend. Hugo tampoco se elegirá porque TypeScript facilita los validadores y los conectores de GitHub/Vercel ya necesarios.
+
+## Dirección visual
+
+La dirección aprobada es **Command Center**: interfaz oscura por defecto, precisa, editorial y legible; acentos verdes reservados para estado y navegación técnica. La página evita estética militar, telemetría falsa o cualquier referencia a NOC, Data Center o infraestructura.
+
+Elementos visuales:
+
+- Marca `LM / SYSTEMS` y navegación compacta.
+- Titulares editoriales de gran escala y copy humano en español.
+- Etiquetas técnicas discretas para categorías y estado de contenido.
+- Tarjetas con bordes finos, espaciado generoso y alta legibilidad.
+- Modo claro opcional, persistido en el navegador.
+- Diseño responsive, accesible con teclado, contraste AA y reducción de movimiento.
+
+## Sitemap y propósito de cada ruta
+
+| Ruta | Propósito | Fuente de contenido |
+| --- | --- | --- |
+| `/` | Identidad, especialidades verificadas, notas y proyectos destacados | Configuración editorial y colecciones públicas |
+| `/sobre-mi/` | Narrativa de método, aprendizaje y construcción de sistemas | Archivo manual público |
+| `/knowledge-hub/` | Índice de artículos técnicos reutilizables | Colección `knowledge` |
+| `/knowledge-hub/[slug]/` | Artículo con breadcrumbs, tags, tiempo de lectura y relacionados | Markdown/MDX público |
+| `/playbooks/` | Biblioteca de guías públicas de automatización, desarrollo y productividad | Colección `playbooks` |
+| `/blog/` | Artículos de reflexión y aprendizaje | Colección `blog` |
+| `/laboratorio/` | Scripts, experimentos y herramientas seleccionadas | Colección `lab` y GitHub seleccionado |
+| `/live-projects/` | Proyectos desplegados confirmados y seleccionados | Archivo generado y configuración editorial |
+| `/recursos/` | Snippets, plantillas y herramientas aprobadas | Colección `resources` |
+| `/now/` | Qué se aprende, construye e investiga, redactado para publicación | Archivo manual público |
+| `/contacto/` | Canales que el usuario configure explícitamente | Configuración del sitio |
+| `/tags/[tag]/` | Archivo por tag | Colecciones públicas |
+| `/search/` | Búsqueda global Pagefind | Índice estático |
+| `/rss.xml` y `/sitemap-index.xml` | Distribución y descubrimiento | Generados durante build |
+
+Las secciones que no tengan contenido aprobado mostrarán una página de estado editorial; no se inventarán entradas ni categorías vacías.
+
+## Modelo de contenido público
+
+Cada archivo público usa frontmatter tipado:
+
+```yaml
+title: Context engineering para proyectos de software
+description: Cómo convierto investigación y decisiones en contexto reutilizable.
+publishedAt: 2026-07-24
+updatedAt: 2026-07-24
+section: knowledge
+category: knowledge-systems
+tags: [ai-coding, context-engineering, metodologia]
+featured: true
+draft: false
+githubRepo: https://github.com/malaface/example
+```
+
+`section`, `category` y `tags` se validan contra una lista explícita de valores permitidos. Las categorías iniciales son `automation`, `knowledge-systems`, `ai-coding`, `application-security`, `product-building` y `developer-experience`, porque son las únicas sustentadas por evidencia actual. Las categorías sin contenido no se renderizan.
+
+Los wikilinks no se importan desde Obsidian. Si un artículo público necesita enlaces internos, usa enlaces Markdown normales a rutas públicas del sitio. Los backlinks y relacionados se calculan a partir de tags, categoría y enlaces públicos dentro de `src/content/`.
+
+## Arquitectura de datos y automatizaciones
+
+```text
+Markdown/MDX público en este repositorio ──┐
+Configuración editorial pública ───────────┼──> validación ──> Astro build ──> GitHub Pages
+GitHub API (metadatos seleccionados) ──────┤
+Vercel API opcional (solo producción) ─────┘
+```
+
+### Contenido
+
+El autor crea contenido público dentro de este repositorio. No existe conexión con el vault. Una guía de contribución explica cómo resumir una idea de forma segura sin copiar notas privadas.
+
+### GitHub
+
+Un script de sincronización consulta el API de GitHub para los repositorios configurados en una lista explícita. Registra nombre, descripción, lenguajes, URL, release, fecha de actualización y actividad reciente. Los nuevos repositorios quedan como candidatos en el artefacto de CI; no se publican hasta agregarlos a la lista editorial.
+
+### Vercel
+
+El conector es opcional y se activa solo con `VERCEL_TOKEN` y, si aplica, `VERCEL_TEAM_ID`. Consulta proyectos y deployments de producción para repositorios seleccionados. Nunca ingiere previews. Sin credenciales, conserva los proyectos manualmente confirmados y muestra que la verificación automática está pendiente.
+
+## Componentes y comportamiento
+
+- `BaseLayout`: metadatos, navegación, pie, tema, Open Graph y analítica opcional.
+- `CommandHeader`: identidad, navegación desktop/móvil y búsqueda.
+- `Hero`: propuesta de valor y especialidades con evidencia editorial.
+- `ContentCard`, `ProjectCard`, `TagList`: tarjetas consistentes y accesibles.
+- `TableOfContents`: generado de encabezados de artículo.
+- `RelatedContent`: puntuación por tag/categoría, sin recomendar borradores.
+- `ActivityFeed`: datos generados de repositorios seleccionados y publicaciones públicas.
+- `Search`: Pagefind estático, sin servicio externo ni rastreo del visitante.
+- `ThemeToggle`: preferencia del sistema con selector manual persistente.
+
+Los fallos de los conectores no bloquean la publicación: el script conserva el último archivo generado válido y emite una advertencia clara. Los fallos de validación de privacidad sí bloquean build y deploy.
+
+## SEO, distribución y rendimiento
+
+- Metadatos únicos por ruta, canonical y tarjetas Open Graph.
+- Sitemap y RSS generados en build.
+- Datos estructurados `Person`, `WebSite`, `BlogPosting` y `SoftwareSourceCode` cuando corresponda.
+- Fuentes locales o del sistema, imágenes optimizadas y JavaScript mínimo.
+- Objetivo Lighthouse: al menos 95 en Performance, Accessibility, Best Practices y SEO en las rutas críticas de producción.
+
+## CI/CD
+
+El workflow de pull request ejecuta: validación de frontmatter y privacidad, pruebas unitarias, `astro check`, build, comprobación de enlaces y Lighthouse.
+
+El workflow de `main` repite las validaciones, actualiza metadatos de GitHub/Vercel si hay secretos configurados y publica el directorio estático mediante GitHub Pages. La publicación usa permisos mínimos de Pages e `id-token`; los secretos nunca aparecen en artefactos ni logs.
+
+## Criterios de aceptación
+
+1. `malaface.github.io` construye y despliega como sitio Astro estático en GitHub Pages.
+2. Ningún comando, workflow, dependencia ni configuración lee o menciona una ruta, token o contenido del vault.
+3. Ningún contenido o navegación contiene NOC, Data Center o datos de infraestructura/operación privada.
+4. Inicio responde visualmente quién es Luis, qué construye y qué conocimiento comparte sin parecer CV.
+5. Las rutas del sitemap funcionan en móvil y escritorio, con navegación por teclado.
+6. Knowledge Hub, Playbooks, Blog, Lab y Recursos se alimentan solo de Markdown/MDX público tipado.
+7. Búsqueda, RSS, sitemap, tags, tabla de contenidos, relacionados y metadatos sociales se generan correctamente.
+8. Live Projects solo lista proyectos seleccionados y deployments de producción confirmados; nunca previews.
+9. CI bloquea contenido prohibido y publica únicamente después de todas las verificaciones.
+
+## Alcance posterior
+
+La primera entrega incluye la plataforma, sus colecciones, dos o más piezas de contenido público redactadas desde cero, automatización de metadatos, CI/CD y documentación de mantenimiento. Capturas automáticas de proyectos se incorporan después de que los deployments de producción estén verificados y se decida una fuente estable de imágenes. Analítica se mantiene desactivada hasta que el usuario elija un proveedor y su política de privacidad.
