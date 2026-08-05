@@ -48,7 +48,7 @@ test.describe('mobile accessibility baseline', () => {
     await expect(skipLink).toBeInViewport();
     await expect(skipLink).toHaveAttribute('href', '#content');
 
-    await skipLink.click();
+    await page.keyboard.press('Enter');
     await expect(page).toHaveURL(/\/#content$/);
     await expect(main).toBeFocused();
   });
