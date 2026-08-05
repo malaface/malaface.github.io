@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import TagList from './TagList.astro';
+
+type PublicEntry =
+  | CollectionEntry<'knowledge'>
+  | CollectionEntry<'playbooks'>
+  | CollectionEntry<'blog'>
+  | CollectionEntry<'lab'>
+  | CollectionEntry<'resources'>;
+
+interface Props {
+  entry: PublicEntry;
+  href: string;
+}
+
+const { entry, href } = Astro.props;
+const publishedAt = entry.data.publishedAt.toLocaleDateString('es-MX', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric'
+});
+const sectionLabels: Record<PublicEntry['collection'], string> = {
+  knowledge: 'Knowledge',
+  playbooks: 'Playbook',
+  blog: 'Blog',
+  lab: 'Laboratorio',
+  resources: 'Recurso'
+};
+---
+
+<article class="content-card">
+  <div class="content-card__meta">
+    <span class="eyebrow">{sectionLabels[entry.collection]}</span>
+    <time datetime={entry.data.publishedAt.toISOString()}>{publishedAt}</time>
+  </div>
+  <h2><a href={href}>{entry.data.title}</a></h2>
+  <p>{entry.data.description}</p>
+  <TagList tags={entry.data.tags} />
+  <a class="card-action" href={href} aria-label={`Leer ${entry.data.title}`}>
+    Leer pieza <span aria-hidden="true">↗</span>
+  </a>
+</article>

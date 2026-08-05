@@ -1,0 +1,52 @@
+---
+import '../styles/global.css';
+import CommandHeader from '../components/CommandHeader.astro';
+import Footer from '../components/Footer.astro';
+import { siteConfig } from '../config/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  article?: boolean;
+}
+
+const { title, description, image = '/og-default.svg', article = false } = Astro.props;
+const pageTitle = title ? `${title} · ${siteConfig.name}` : siteConfig.name;
+const pageDescription = description ?? siteConfig.description;
+const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url);
+const socialImageUrl = new URL(image, siteConfig.url);
+---
+
+<!doctype html>
+<html lang="es-MX" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0a0d0c" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>
+      try {
+        const theme = localStorage.getItem('lm-theme');
+        if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Saltar al contenido</a>
+    <CommandHeader />
+    <main id="content"><slot /></main>
+    <Footer />
+  </body>
+</html>
