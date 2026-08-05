@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getPublishedEntries, readingTime, relatedEntries } from '../src/lib/content';
+import { formatPublicDate, getPublishedEntries, readingTime, relatedEntries } from '../src/lib/content';
 
 describe('content utilities', () => {
   it('removes drafts and sorts published entries from newest to oldest', () => {
@@ -14,6 +14,12 @@ describe('content utilities', () => {
 
   it('returns at least one minute of reading time for empty content', () => {
     expect(readingTime('')).toBe(1);
+  });
+
+  it('formats date-only publication dates on their UTC calendar day', () => {
+    const publicationDate = new Date('2026-07-24T00:00:00.000Z');
+
+    expect(formatPublicDate(publicationDate)).toBe('24 de julio de 2026');
   });
 
   it('ranks matching categories before a single shared tag', () => {

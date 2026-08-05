@@ -38,6 +38,15 @@ export function readingTime(body: string) {
   return Math.max(1, Math.ceil(body.trim().split(/\s+/).filter(Boolean).length / 220));
 }
 
+export function formatPublicDate(date: Date, locale = 'es-MX') {
+  return new Intl.DateTimeFormat(locale, {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC'
+  }).format(date);
+}
+
 interface RelatedEntryData {
   category: string;
   tags: readonly string[];

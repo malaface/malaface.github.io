@@ -1,16 +1,11 @@
 ---
-import { collectionDetails, contentHref, type PublicEntry } from '../lib/content';
+import { collectionDetails, contentHref, formatPublicDate, type PublicEntry } from '../lib/content';
 
 interface Props {
   entries: PublicEntry[];
 }
 
 const { entries } = Astro.props;
-const dateFormatter = new Intl.DateTimeFormat('es-MX', {
-  day: '2-digit',
-  month: 'short',
-  year: 'numeric'
-});
 ---
 
 <div class="activity-feed">
@@ -27,7 +22,7 @@ const dateFormatter = new Intl.DateTimeFormat('es-MX', {
       {entries.map((entry) => (
         <li>
           <time datetime={entry.data.publishedAt.toISOString()}>
-            {dateFormatter.format(entry.data.publishedAt)}
+            {formatPublicDate(entry.data.publishedAt)}
           </time>
           <div>
             <span>{collectionDetails[entry.collection].label}</span>

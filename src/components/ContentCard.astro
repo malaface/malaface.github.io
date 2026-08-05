@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import TagList from './TagList.astro';
+import { formatPublicDate } from '../lib/content';
 
 type PublicEntry =
   | CollectionEntry<'knowledge'>
@@ -15,11 +16,7 @@ interface Props {
 }
 
 const { entry, href } = Astro.props;
-const publishedAt = entry.data.publishedAt.toLocaleDateString('es-MX', {
-  day: '2-digit',
-  month: 'short',
-  year: 'numeric'
-});
+const publishedAt = formatPublicDate(entry.data.publishedAt);
 const sectionLabels: Record<PublicEntry['collection'], string> = {
   knowledge: 'Conocimiento',
   playbooks: 'Guía',
