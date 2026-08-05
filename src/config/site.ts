@@ -9,8 +9,10 @@ export const siteConfig = {
     { href: '/', label: 'Inicio' },
     { href: '/knowledge-hub/', label: 'Conocimiento' },
     { href: '/playbooks/', label: 'Guías' },
+    { href: '/blog/', label: 'Blog' },
     { href: '/laboratorio/', label: 'Laboratorio' },
     { href: '/live-projects/', label: 'Proyectos' },
+    { href: '/recursos/', label: 'Recursos' },
     { href: '/now/', label: 'Ahora' }
   ]
 } as const;

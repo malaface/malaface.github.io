@@ -20,6 +20,10 @@ describe('static site routes', () => {
     'index.html',
     'knowledge-hub/index.html',
     'knowledge-hub/context-engineering/index.html',
+    'playbooks/index.html',
+    'blog/index.html',
+    'laboratorio/index.html',
+    'recursos/index.html',
     'tags/ai-coding/index.html',
     'live-projects/index.html',
     'now/index.html',
@@ -31,6 +35,23 @@ describe('static site routes', () => {
     'pagefind/pagefind-entry.json'
   ])('builds %s', async (path) => {
     await expect(access(builtPage(path))).resolves.toBeUndefined();
+  });
+
+  it('links every public collection from the secondary navigation', async () => {
+    const html = await readFile(builtPage('index.html'), 'utf8');
+    const footer = html.match(/<footer class="site-footer">(?<footer>[\s\S]*?)<\/footer>/)?.groups?.footer ?? '';
+
+    for (const href of [
+      '/knowledge-hub/',
+      '/playbooks/',
+      '/blog/',
+      '/laboratorio/',
+      '/live-projects/',
+      '/recursos/',
+      '/now/'
+    ]) {
+      expect(footer).toContain(`href="${href}"`);
+    }
   });
 
   it('does not generate a route for an unknown tag', async () => {
