@@ -999,6 +999,11 @@ p {
     flex-direction: column;
   }
 
+  .activity-feed__header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .outcome-grid {
     grid-template-columns: 1fr;
   }

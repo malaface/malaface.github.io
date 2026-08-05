@@ -82,3 +82,16 @@ test.describe('mobile accessibility baseline', () => {
     await expect(themeButton).toHaveAttribute('aria-pressed', 'true');
   });
 });
+
+test.describe('narrow mobile layout', () => {
+  test.use({ viewport: { width: 320, height: 812 } });
+
+  test('Inicio keeps the activity feed header inside the viewport at 320px', async ({ page }) => {
+    await page.goto('/');
+
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth
+    );
+    expect(overflow).toBeLessThanOrEqual(1);
+  });
+});
