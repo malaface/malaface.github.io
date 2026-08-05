@@ -2,6 +2,13 @@
 
 Marca personal para ayudar a profesionales de salud, negocios familiares y PYMEs de servicios mediante contenido técnico público. No es un CV. Para publicar contenido, curar páginas aprobadas en Live Projects o revertir un despliegue, sigue la fuente única de operación: [docs/maintenance.md](docs/maintenance.md). Consulta [CONTRIBUTING.md](CONTRIBUTING.md) antes de enviar cambios.
 
+## Documentación
+
+- [Checklist de release](docs/release-checklist.md)
+- [Mantenimiento seguro](docs/maintenance.md)
+- [Diseño de la plataforma](docs/superpowers/specs/2026-07-24-personal-technical-platform-design.md)
+- [Plan de implementación](docs/superpowers/plans/2026-07-24-personal-technical-platform.md)
+
 ## Desarrollo
 
 ```bash
