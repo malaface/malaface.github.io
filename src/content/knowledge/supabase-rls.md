@@ -9,9 +9,9 @@ featured: true
 draft: false
 ---
 
-Row Level Security, o RLS, permite expresar en PostgreSQL qué filas puede consultar o modificar cada persona. En una aplicación con Supabase, esta capa debe tratarse como una parte del modelo de producto y no como un ajuste posterior.
+Una herramienta orientada al seguimiento de clientes necesita separar con claridad la información que corresponde a cada persona. El resultado buscado es una experiencia confiable que mantenga esa separación sin convertir la complejidad técnica en una carga para quien usa el producto.
 
-Para una herramienta orientada al seguimiento de clientes, estas reglas son un medio técnico para ofrecer una experiencia confiable. El resultado buscado es que cada persona vea únicamente la información que le corresponde, sin convertir la complejidad técnica en una carga para quien usa el producto.
+Row Level Security, o RLS, permite expresar en PostgreSQL qué filas puede consultar o modificar cada persona. En una aplicación con Supabase, esta capa es un medio para sostener ese resultado y debe tratarse como una parte del modelo de producto, no como un ajuste posterior.
 
 ## Empezar por las reglas del dominio
 

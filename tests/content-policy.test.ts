@@ -76,8 +76,8 @@ describe('public content policy', () => {
     const source = 'Saldo bancario: $125,000. Bank balance: USD 42,500.75.';
 
     expect(assertPublicContent(source, 'balances.md')).toEqual([
-      'balances.md: contiene dato financiero bloqueado "saldo bancario"',
-      'balances.md: contiene dato financiero bloqueado "bank balance"'
+      'balances.md: contiene término bloqueado "saldo bancario"',
+      'balances.md: contiene término bloqueado "bank balance"'
     ]);
   });
 
@@ -85,7 +85,7 @@ describe('public content policy', () => {
     const source = 'CLABE: 123456789012345678';
 
     expect(assertPublicContent(source, 'clabe.md')).toEqual([
-      'clabe.md: contiene dato financiero bloqueado "clabe"'
+      'clabe.md: contiene término bloqueado "clabe"'
     ]);
   });
 
@@ -93,9 +93,46 @@ describe('public content policy', () => {
     const source = 'Número de cuenta: 1234567890. Account number: 1234567890.';
 
     expect(assertPublicContent(source, 'accounts.md')).toEqual([
-      'accounts.md: contiene dato financiero bloqueado "número de cuenta"',
-      'accounts.md: contiene dato financiero bloqueado "account number"'
+      'accounts.md: contiene término bloqueado "número de cuenta"',
+      'accounts.md: contiene término bloqueado "account number"'
     ]);
+  });
+
+  it('rejects sensitive financial labels across common formatting variants', () => {
+    const cases = [
+      {
+        source: 'CLABE 123456789012345678',
+        expected: ['formatting.md: contiene término bloqueado "clabe"']
+      },
+      {
+        source: 'CLABE 123 456 789 012 345 678',
+        expected: ['formatting.md: contiene término bloqueado "clabe"']
+      },
+      {
+        source: 'Número de cuenta = 1234567890',
+        expected: ['formatting.md: contiene término bloqueado "número de cuenta"']
+      },
+      {
+        source: 'Numero de cuenta - 1234-5678-90',
+        expected: ['formatting.md: contiene término bloqueado "numero de cuenta"']
+      },
+      {
+        source: 'Account number = 123-456-7890',
+        expected: ['formatting.md: contiene término bloqueado "account number"']
+      },
+      {
+        source: 'Saldo bancario = MXN 125,000',
+        expected: ['formatting.md: contiene término bloqueado "saldo bancario"']
+      },
+      {
+        source: 'Bank balance - USD 42,500.75',
+        expected: ['formatting.md: contiene término bloqueado "bank balance"']
+      }
+    ];
+
+    for (const { source, expected } of cases) {
+      expect(assertPublicContent(source, 'formatting.md')).toEqual(expected);
+    }
   });
 
   it('uses the same policy function as the CLI validator', () => {
