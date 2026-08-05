@@ -6,7 +6,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import projectData from '../data/live-projects.json';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { contentHref, getPublishedEntries, type PublicEntry } from '../lib/content';
-import { getVisibleProjects, type ProjectRecord } from '../lib/projects';
+import { getHomeProject, parseProjectRecords } from '../lib/projects';
 import { siteConfig } from '../config/site';
 
 const collections = await Promise.all([
@@ -19,9 +19,8 @@ const collections = await Promise.all([
 const entries = getPublishedEntries(collections.flat() as PublicEntry[]);
 const featuredEntries = entries.filter((entry) => entry.data.featured).slice(0, 4);
 const recentEntries = entries.slice(0, 4);
-const featuredProjects = getVisibleProjects(projectData as ProjectRecord[])
-  .filter(({ featured }) => featured)
-  .slice(0, 1);
+const projects = parseProjectRecords(projectData);
+const homeProject = getHomeProject(projects);
 
 const outcomes = [
   { number: '01', title: 'Mayor alcance', description: 'Comunicar mejor el valor del trabajo para llegar a más personas.' },
@@ -122,8 +121,8 @@ const capabilities = [
       <a class="text-link" href="/live-projects/">Ver todos los proyectos <span aria-hidden="true">→</span></a>
     </div>
     <div class="public-work-grid">
-      {featuredProjects.length > 0 ? (
-        featuredProjects.map((project) => <ProjectCard project={project} />)
+      {homeProject ? (
+        <ProjectCard project={homeProject} />
       ) : (
         <article class="project-placeholder">
           <div>

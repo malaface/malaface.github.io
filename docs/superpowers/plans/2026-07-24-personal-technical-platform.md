@@ -624,6 +624,7 @@ git commit -m "feat: add knowledge hub and editorial routes"
 **Interfaces:**
 - `ProjectRecord` has exactly `id`, `name`, `description`, `technologies`, `productionUrl`, `status`, `updatedAt`, `featured`.
 - `src/data/live-projects.json` is the manual approval boundary. It contains only page URLs explicitly supplied and approved by the owner.
+- Both rendering routes call `parseProjectRecords`; the parser rejects extra keys, invalid types, non-HTTP(S) absolute URLs, invalid ISO dates and statuses outside `production`, `maintenance` and `archived`.
 
 - [ ] **Step 1: Write failing manual-catalog tests**
 
@@ -644,7 +645,7 @@ Expected: failure while old project records and connector artifacts remain.
 
 - [ ] **Step 3: Implement the manual empty catalog**
 
-Set `src/data/live-projects.json` to `[]`. Implement `ProjectRecord` with only the eight fields above and keep `getVisibleProjects` as a deterministic manual-record sort. `ProjectCard` links only to `productionUrl`.
+Set `src/data/live-projects.json` to `[]`. Implement `ProjectRecord` with only the eight fields above, parse imported JSON before use, and keep `getVisibleProjects` as a deterministic manual-record sort. `ProjectCard` links only to `productionUrl`. Inicio prefers a featured record and otherwise uses the first sorted approved record; it shows the empty state only when the complete catalog is empty.
 
 Implement honest Spanish empty states on Inicio and `/live-projects/`. Do not invent a page, deployment, repository URL or technology record. Continue showing `ActivityFeed` from public editorial entries on Inicio.
 

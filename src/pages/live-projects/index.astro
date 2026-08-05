@@ -2,9 +2,9 @@
 import ProjectCard from '../../components/ProjectCard.astro';
 import projectData from '../../data/live-projects.json';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getVisibleProjects, type ProjectRecord } from '../../lib/projects';
+import { getVisibleProjects, parseProjectRecords } from '../../lib/projects';
 
-const projects = getVisibleProjects(projectData as ProjectRecord[]);
+const projects = getVisibleProjects(parseProjectRecords(projectData));
 ---
 
 <BaseLayout

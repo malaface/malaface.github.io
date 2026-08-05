@@ -107,7 +107,7 @@ El autor crea contenido público dentro de este repositorio. No existe conexión
 
 ### Live Projects
 
-`src/data/live-projects.json` se edita manualmente y contiene únicamente páginas públicas aprobadas. Cada registro usa `id`, `name`, `description`, `technologies`, `productionUrl`, `status`, `updatedAt` y `featured`. No almacena enlaces de código ni identificadores de repositorios. Si el propietario no ha proporcionado URLs, el archivo es `[]` y tanto la ruta como Inicio muestran un estado vacío honesto.
+`src/data/live-projects.json` se edita manualmente y contiene únicamente páginas públicas aprobadas. Cada registro usa `id`, `name`, `description`, `technologies`, `productionUrl`, `status`, `updatedAt` y `featured`. Un parser estricto rechaza campos adicionales, tipos incorrectos, tecnologías que no sean cadenas, URLs que no sean HTTP(S) absolutas, fechas inválidas y estados fuera de `production`, `maintenance` o `archived`. No almacena enlaces de código ni identificadores de repositorios. Si el propietario no ha proporcionado URLs, el archivo es `[]` y tanto la ruta como Inicio muestran un estado vacío honesto. Si hay páginas pero ninguna está destacada, Inicio muestra la primera según el orden determinista de actualización.
 
 ## Componentes y comportamiento
 
