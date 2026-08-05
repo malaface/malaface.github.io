@@ -8,10 +8,11 @@
   --color-border-strong: #3c4742;
   --color-text: #f4f7f5;
   --color-muted: #9eaaa4;
-  --color-subtle: #737e78;
+  --color-subtle: #84918a;
   --color-accent: #86efac;
   --color-accent-strong: #4ade80;
   --color-accent-ink: #062b16;
+  --color-signal: #9db7ff;
   --color-focus: #86efac;
   --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
@@ -43,6 +44,7 @@
   --color-accent: #16813d;
   --color-accent-strong: #116d33;
   --color-accent-ink: #f4fff7;
+  --color-signal: #3159a8;
   --color-focus: #16813d;
   --shadow-card: 0 1.25rem 4rem rgb(25 55 37 / 0.1);
 }
@@ -67,7 +69,7 @@ body {
   min-width: 20rem;
   min-height: 100vh;
   background:
-    radial-gradient(circle at 12% -8%, color-mix(in srgb, var(--color-accent) 7%, transparent), transparent 28rem),
+    radial-gradient(circle at 12% -8%, color-mix(in srgb, var(--color-signal) 7%, transparent), transparent 28rem),
     var(--color-background);
 }
 
@@ -207,8 +209,8 @@ p {
   width: 0.55rem;
   height: 0.55rem;
   border-radius: 50%;
-  background: var(--color-accent);
-  box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--color-accent) 13%, transparent);
+  background: var(--color-signal);
+  box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--color-signal) 13%, transparent);
 }
 
 .command-nav {
@@ -336,7 +338,7 @@ p {
 
 .site-footer__brand,
 .eyebrow {
-  color: var(--color-accent);
+  color: var(--color-signal);
   font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 720;

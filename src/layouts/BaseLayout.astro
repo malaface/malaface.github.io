@@ -5,15 +5,14 @@ import Footer from '../components/Footer.astro';
 import { siteConfig } from '../config/site';
 
 interface Props {
-  title?: string;
-  description?: string;
+  title: string;
+  description: string;
   image?: string;
   article?: boolean;
 }
 
 const { title, description, image = '/og-default.svg', article = false } = Astro.props;
 const pageTitle = title ? `${title} · ${siteConfig.name}` : siteConfig.name;
-const pageDescription = description ?? siteConfig.description;
 const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url);
 const socialImageUrl = new URL(image, siteConfig.url);
 ---
@@ -26,13 +25,13 @@ const socialImageUrl = new URL(image, siteConfig.url);
     <meta name="color-scheme" content="dark light" />
     <meta name="theme-color" content="#0a0d0c" />
     <title>{pageTitle}</title>
-    <meta name="description" content={pageDescription} />
+    <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:locale" content="es_MX" />
     <meta property="og:type" content={article ? 'article' : 'website'} />
     <meta property="og:title" content={pageTitle} />
-    <meta property="og:description" content={pageDescription} />
+    <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={socialImageUrl} />
     <meta name="twitter:card" content="summary_large_image" />

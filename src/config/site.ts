@@ -7,10 +7,10 @@ export const siteConfig = {
   github: 'https://github.com/malaface',
   navigation: [
     { href: '/', label: 'Inicio' },
-    { href: '/knowledge-hub/', label: 'Knowledge Hub' },
-    { href: '/playbooks/', label: 'Playbooks' },
-    { href: '/laboratorio/', label: 'Lab' },
-    { href: '/live-projects/', label: 'Projects' },
-    { href: '/now/', label: 'Now' }
+    { href: '/knowledge-hub/', label: 'Conocimiento' },
+    { href: '/playbooks/', label: 'Guías' },
+    { href: '/laboratorio/', label: 'Laboratorio' },
+    { href: '/live-projects/', label: 'Proyectos' },
+    { href: '/now/', label: 'Ahora' }
   ]
 } as const;
