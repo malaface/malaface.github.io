@@ -19,6 +19,12 @@ describe('public content policy', () => {
     expect(assertPublicContent(source, 'business.md')).toEqual([]);
   });
 
+  it('allows years and business metrics without sensitive financial labels', () => {
+    const source = 'En 2026, la meta anual del negocio es $125,000 y 10,000 clientes potenciales.';
+
+    expect(assertPublicContent(source, 'metrics.md')).toEqual([]);
+  });
+
   it('rejects blocked work and sensitive terms case-insensitively', () => {
     const source = 'Lecciones de NOC y Data Center con la IP 10.0.0.5';
 
@@ -46,16 +52,49 @@ describe('public content policy', () => {
     ]);
   });
 
-  it('rejects private financial data, account numbers and sensitive records', () => {
-    const source = 'Número de cuenta, account number, datos financieros personales, private financial data, credencial y registros financieros sensibles.';
+  it('rejects private financial data and sensitive records', () => {
+    const source = 'Datos financieros personales, private financial data, credencial y registros financieros sensibles.';
 
     expect(assertPublicContent(source, 'private-finance.md')).toEqual([
       'private-finance.md: contiene término bloqueado "credencial"',
-      'private-finance.md: contiene término bloqueado "número de cuenta"',
-      'private-finance.md: contiene término bloqueado "account number"',
       'private-finance.md: contiene término bloqueado "datos financieros personales"',
       'private-finance.md: contiene término bloqueado "private financial data"',
       'private-finance.md: contiene término bloqueado "registros financieros sensibles"'
+    ]);
+  });
+
+  it('rejects personal finance topics in Spanish and English', () => {
+    const source = 'Finanzas personales y personal finances.';
+
+    expect(assertPublicContent(source, 'personal-finance.md')).toEqual([
+      'personal-finance.md: contiene término bloqueado "finanzas personales"',
+      'personal-finance.md: contiene término bloqueado "personal finances"'
+    ]);
+  });
+
+  it('rejects labelled bank balances with synthetic values', () => {
+    const source = 'Saldo bancario: $125,000. Bank balance: USD 42,500.75.';
+
+    expect(assertPublicContent(source, 'balances.md')).toEqual([
+      'balances.md: contiene dato financiero bloqueado "saldo bancario"',
+      'balances.md: contiene dato financiero bloqueado "bank balance"'
+    ]);
+  });
+
+  it('rejects a labelled CLABE with a synthetic value', () => {
+    const source = 'CLABE: 123456789012345678';
+
+    expect(assertPublicContent(source, 'clabe.md')).toEqual([
+      'clabe.md: contiene dato financiero bloqueado "clabe"'
+    ]);
+  });
+
+  it('rejects labelled account numbers with synthetic values', () => {
+    const source = 'Número de cuenta: 1234567890. Account number: 1234567890.';
+
+    expect(assertPublicContent(source, 'accounts.md')).toEqual([
+      'accounts.md: contiene dato financiero bloqueado "número de cuenta"',
+      'accounts.md: contiene dato financiero bloqueado "account number"'
     ]);
   });
 

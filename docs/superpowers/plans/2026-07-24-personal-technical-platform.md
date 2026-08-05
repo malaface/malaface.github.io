@@ -272,11 +272,11 @@ describe('public content policy', () => {
   });
 
   it('rejects private financial data and account numbers', () => {
-    const source = 'Número de cuenta, datos financieros personales y private financial data.';
+    const source = 'Número de cuenta: 1234567890, CLABE: 123456789012345678 y datos financieros personales.';
     expect(assertPublicContent(source, 'private-finance.md')).toEqual([
-      'private-finance.md: contiene término bloqueado "número de cuenta"',
       'private-finance.md: contiene término bloqueado "datos financieros personales"',
-      'private-finance.md: contiene término bloqueado "private financial data"'
+      'private-finance.md: contiene dato financiero bloqueado "clabe"',
+      'private-finance.md: contiene dato financiero bloqueado "número de cuenta"'
     ]);
   });
 });
@@ -303,15 +303,21 @@ export const blockedTerms = [
   'credencial', 'credenciales', 'credential', 'credentials',
   'contraseña', 'contraseñas', 'password', 'passwords',
   'ip interna', 'ips internas', 'internal ip', 'internal ips',
-  'número de cuenta', 'numero de cuenta', 'números de cuenta', 'numeros de cuenta',
-  'account number', 'account numbers', 'datos financieros personales',
+  'finanzas personales', 'personal finances', 'datos financieros personales',
   'personal financial data', 'private financial data',
   'registros financieros sensibles', 'sensitive financial records',
   'diario', 'sensitive', 'sensible', 'archives', 'archivos'
 ];
 
 const ipAddress = /\b(?:\d{1,3}\.){3}\d{1,3}\b/;
-const wordCharacter = '\\p{L}\\p{N}_';
+const wordCharacter = '\\p{L}\\p{M}\\p{N}_';
+const sensitiveFinancialPatterns = [
+  { label: 'saldo bancario', pattern: /(?:^|[^\p{L}\p{M}\p{N}_])saldo bancario\s*:\s*(?:(?:MXN|USD|EUR|[$€£])\s*)?\d[\d.,]*/iu },
+  { label: 'bank balance', pattern: /(?:^|[^\p{L}\p{M}\p{N}_])bank balance\s*:\s*(?:(?:MXN|USD|EUR|[$€£])\s*)?\d[\d.,]*/iu },
+  { label: 'clabe', pattern: /(?:^|[^\p{L}\p{M}\p{N}_])clabe\s*:\s*\d{18}(?=$|[^\p{L}\p{M}\p{N}_])/iu },
+  { label: 'número de cuenta', pattern: /(?:^|[^\p{L}\p{M}\p{N}_])n[uú]meros? de cuenta\s*:\s*\d{6,20}(?=$|[^\p{L}\p{M}\p{N}_])/iu },
+  { label: 'account number', pattern: /(?:^|[^\p{L}\p{M}\p{N}_])account numbers?\s*:\s*\d{6,20}(?=$|[^\p{L}\p{M}\p{N}_])/iu }
+];
 
 function escapeRegExp(term) {
   return term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -329,12 +335,15 @@ export function assertPublicContent(source, filePath) {
   const violations = blockedTerms
     .filter((term) => containsBlockedTerm(source, term))
     .map((term) => `${filePath}: contiene término bloqueado "${term}"`);
+  for (const { label, pattern } of sensitiveFinancialPatterns) {
+    if (pattern.test(source)) violations.push(`${filePath}: contiene dato financiero bloqueado "${label}"`);
+  }
   if (ipAddress.test(source)) violations.push(`${filePath}: contiene una dirección IP`);
   return violations;
 }
 ```
 
-Create `src/config/content-policy.ts` as `export { assertPublicContent } from './public-content-policy.mjs';` and declare the shared API in `src/config/public-content-policy.d.mts`. Do not block generic `finanzas`, `financial` or `gestión financiera`; block only the explicit private/personal financial patterns in `blockedTerms`.
+Create `src/config/content-policy.ts` as `export { assertPublicContent } from './public-content-policy.mjs';` and declare the shared API in `src/config/public-content-policy.d.mts`. Do not block generic `finanzas`, `financial` or `gestión financiera`. Block personal-finance categories by full phrase and detect synthetic sensitive values only when paired with labels such as bank balance, CLABE or account number, so ordinary years and unlabeled business metrics remain allowed.
 
 Create `src/content.config.ts` with one shared Zod schema requiring `title`, `description`, `publishedAt`, `section`, `category`, `tags`, `featured` and `draft`; allow optional `updatedAt`, `githubRepo` and `externalUrl`. Define allowed categories exactly as `automation`, `knowledge-systems`, `ai-coding`, `application-security`, `product-building` and `developer-experience`.
 
