@@ -1,13 +1,15 @@
 {
   "name": "malaface-github-io",
   "private": true,
+  "packageManager": "pnpm@11.10.0",
   "type": "module",
   "scripts": {
     "dev": "astro dev",
     "check": "astro check",
-    "test": "vitest run",
+    "test": "pnpm build && vitest run",
     "test:e2e": "playwright test",
     "lighthouse": "lhci autorun",
+    "check:links": "node scripts/check-built-links.mjs",
     "validate:public": "node scripts/validate-public-content.mjs",
     "build": "pnpm validate:public && astro check && astro build && pagefind --site dist",
     "preview": "astro preview"

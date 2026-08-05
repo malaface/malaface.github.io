@@ -1,8 +1,19 @@
-import { access, readFile } from 'node:fs/promises';
+import { access, readFile, readdir } from 'node:fs/promises';
 import { describe, expect, it } from 'vitest';
 import { siteConfig } from '../src/config/site';
 
 const builtPage = (path: string) => new URL(`../dist/${path}`, import.meta.url);
+
+async function builtHtmlFiles(directory = new URL('../dist/', import.meta.url)): Promise<URL[]> {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const files = await Promise.all(entries.map((entry) => {
+    const entryUrl = new URL(entry.name + (entry.isDirectory() ? '/' : ''), directory);
+    if (entry.isDirectory()) return builtHtmlFiles(entryUrl);
+    return entry.name.endsWith('.html') ? [entryUrl] : [];
+  }));
+
+  return files.flat();
+}
 
 describe('static site routes', () => {
   it.each([
@@ -109,5 +120,18 @@ describe('static site routes', () => {
     expect(projectsHtml).not.toContain('t-ethos');
     expect(homeHtml).not.toContain(siteConfig.github);
     expect(projectsHtml).not.toContain(siteConfig.github);
+  });
+
+  it('keeps the configured GitHub profile exclusive to Contacto', async () => {
+    for (const fileUrl of await builtHtmlFiles()) {
+      const relativePath = fileUrl.pathname.split('/dist/').at(-1);
+      const html = await readFile(fileUrl, 'utf8');
+
+      if (relativePath === 'contacto/index.html') {
+        expect(html, relativePath).toContain(siteConfig.github);
+      } else {
+        expect(html, relativePath).not.toContain(siteConfig.github);
+      }
+    }
   });
 });

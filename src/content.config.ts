@@ -1,32 +1,11 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { contentSchemaFor, type ContentSection } from './config/content-schema';
 
-const categories = [
-  'automation',
-  'knowledge-systems',
-  'ai-coding',
-  'application-security',
-  'product-building',
-  'developer-experience'
-] as const;
-
-const sharedSchema = z.object({
-  title: z.string(),
-  description: z.string(),
-  publishedAt: z.coerce.date(),
-  updatedAt: z.coerce.date().optional(),
-  section: z.string(),
-  category: z.enum(categories),
-  tags: z.array(z.string()),
-  featured: z.boolean(),
-  draft: z.boolean(),
-  externalUrl: z.string().url().optional()
-});
-
-const collection = (name: string) =>
+const collection = (name: ContentSection) =>
   defineCollection({
     loader: glob({ base: `./src/content/${name}`, pattern: '**/*.{md,mdx}' }),
-    schema: sharedSchema
+    schema: contentSchemaFor(name)
   });
 
 export const collections = {
