@@ -141,16 +141,18 @@ describe('static site routes', () => {
     expect(html).not.toContain('>Ir a Conocimiento');
   });
 
-  it('shows an honest empty project state while keeping public article activity', async () => {
+  it('shows Nexus HVAC on Inicio and both approved pages on Proyectos', async () => {
     const homeHtml = await readFile(builtPage('index.html'), 'utf8');
     const projectsHtml = await readFile(builtPage('live-projects/index.html'), 'utf8');
 
-    expect(homeHtml).toContain('href="/live-projects/"');
-    expect(homeHtml).toContain('Aún no hay páginas de proyectos aprobadas para mostrar.');
-    expect(projectsHtml).toContain('Aún no hay páginas de proyectos aprobadas para mostrar.');
+    expect(homeHtml).toContain('Nexus HVAC');
+    expect(homeHtml).toContain('https://nexus-hvac.malacaran8n.uk/');
+    expect(homeHtml).not.toContain('https://t-ethos.malacaran8n.uk/');
+    expect(projectsHtml).toContain('Nexus HVAC');
+    expect(projectsHtml).toContain('https://nexus-hvac.malacaran8n.uk/');
+    expect(projectsHtml).toContain('T-Ethos');
+    expect(projectsHtml).toContain('https://t-ethos.malacaran8n.uk/');
     expect(homeHtml).toContain('Publicaciones recientes');
-    expect(homeHtml).not.toContain('t-ethos');
-    expect(projectsHtml).not.toContain('t-ethos');
     expect(homeHtml).not.toContain(siteConfig.github);
     expect(projectsHtml).not.toContain(siteConfig.github);
   });
