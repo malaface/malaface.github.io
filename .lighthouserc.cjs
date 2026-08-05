@@ -1,6 +1,9 @@
+const { chromium } = require('@playwright/test');
+
 module.exports = {
   ci: {
     collect: {
+      chromePath: chromium.executablePath(),
       staticDistDir: './dist',
       url: [
         'http://localhost/',
