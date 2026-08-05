@@ -22,6 +22,15 @@ describe('GitHub Actions workflows', () => {
     expect(packageJson.scripts.test).toMatch(/^pnpm build && /);
   });
 
+  it('validates every generated HTML document after Astro builds it', async () => {
+    const packageJson = JSON.parse(await readFile(packageFile, 'utf8'));
+
+    expect(packageJson.scripts['validate:built']).toBe(
+      'node scripts/validate-public-content.mjs --built dist'
+    );
+    expect(packageJson.scripts.build).toMatch(/astro build && pnpm validate:built && pagefind/);
+  });
+
   it('runs the complete browser, Lighthouse and link suite before deployment', async () => {
     const [ci, deploy] = await Promise.all([
       readFile(workflow('ci.yml'), 'utf8'),

@@ -10,6 +10,7 @@ pnpm check
 pnpm build
 pnpm test:e2e
 pnpm lighthouse
+pnpm check:links
 git diff --check
 git status --short
 ```

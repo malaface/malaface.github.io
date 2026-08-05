@@ -11,7 +11,8 @@
     "lighthouse": "lhci autorun",
     "check:links": "node scripts/check-built-links.mjs",
     "validate:public": "node scripts/validate-public-content.mjs",
-    "build": "pnpm validate:public && astro check && astro build && pagefind --site dist",
+    "validate:built": "node scripts/validate-public-content.mjs --built dist",
+    "build": "pnpm validate:public && astro check && astro build && pnpm validate:built && pagefind --site dist",
     "preview": "astro preview"
   },
   "dependencies": {

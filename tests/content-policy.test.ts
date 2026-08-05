@@ -63,6 +63,24 @@ describe('public content policy', () => {
     ]);
   });
 
+  it('rejects private, sensitive and vault-derived data without blocking generic privacy guidance', () => {
+    const source = 'Datos privados, private data, datos sensibles, vault data y ruta del vault.';
+
+    expect(assertPublicContent(source, 'private-data.md')).toEqual([
+      'private-data.md: contiene término bloqueado "datos privados"',
+      'private-data.md: contiene término bloqueado "private data"',
+      'private-data.md: contiene término bloqueado "datos sensibles"',
+      'private-data.md: contiene término bloqueado "vault data"',
+      'private-data.md: contiene término bloqueado "ruta del vault"'
+    ]);
+    expect(
+      assertPublicContent(
+        'Una guía pública puede explicar privacidad sin exponer información privada.',
+        'privacy-guidance.md'
+      )
+    ).toEqual([]);
+  });
+
   it('rejects personal finance topics in Spanish and English', () => {
     const source = 'Finanzas personales y personal finances.';
 

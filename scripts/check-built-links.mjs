@@ -56,22 +56,42 @@ const violations = [];
 for (const sourceFile of await filesIn(siteDirectory)) {
   const source = await readFile(sourceFile, 'utf8');
   const sourceUrl = new URL(publicPathFor(sourceFile), 'https://site.invalid');
+  const sourceName = relative(siteDirectory, sourceFile).replaceAll('\\', '/');
 
   for (const [, href] of source.matchAll(hrefPattern)) {
     if (/^(?:mailto:|tel:|data:|javascript:)/iu.test(href)) continue;
 
-    const url = new URL(href, sourceUrl);
+    let url;
+    try {
+      url = new URL(href, sourceUrl);
+    } catch {
+      violations.push(`${sourceName}: enlace interno malformado "${href}"`);
+      continue;
+    }
     if (url.origin !== sourceUrl.origin) continue;
 
-    const destination = await targetFile(url.pathname);
-    const sourceName = relative(siteDirectory, sourceFile).replaceAll('\\', '/');
+    let destination;
+    try {
+      destination = await targetFile(url.pathname);
+    } catch (error) {
+      if (!(error instanceof URIError)) throw error;
+      violations.push(`${sourceName}: enlace interno malformado "${href}"`);
+      continue;
+    }
     if (!destination) {
       violations.push(`${sourceName}: enlace interno inexistente "${href}"`);
       continue;
     }
 
-    if (url.hash && !hasFragment(await readFile(destination, 'utf8'), url.hash.slice(1))) {
-      violations.push(`${sourceName}: fragmento interno inexistente "${href}"`);
+    if (url.hash) {
+      try {
+        if (!hasFragment(await readFile(destination, 'utf8'), url.hash.slice(1))) {
+          violations.push(`${sourceName}: fragmento interno inexistente "${href}"`);
+        }
+      } catch (error) {
+        if (!(error instanceof URIError)) throw error;
+        violations.push(`${sourceName}: enlace interno malformado "${href}"`);
+      }
     }
   }
 }

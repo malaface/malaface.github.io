@@ -45,4 +45,28 @@ describe('built internal link checker', () => {
       stderr: expect.stringContaining('/empty-directory')
     });
   });
+
+  it('reports malformed URLs with the source document and href', async () => {
+    const directory = await siteFixture('http://[');
+
+    await expect(run(process.execPath, [checker.pathname, directory])).rejects.toMatchObject({
+      stderr: expect.stringContaining('index.html: enlace interno malformado "http://["')
+    });
+  });
+
+  it('reports malformed URL escapes with the source document and href', async () => {
+    const directory = await siteFixture('/about/%E0%A4%A');
+
+    await expect(run(process.execPath, [checker.pathname, directory])).rejects.toMatchObject({
+      stderr: expect.stringContaining('index.html: enlace interno malformado "/about/%E0%A4%A"')
+    });
+  });
+
+  it('reports an internal fragment that does not exist', async () => {
+    const directory = await siteFixture('/about/#missing');
+
+    await expect(run(process.execPath, [checker.pathname, directory])).rejects.toMatchObject({
+      stderr: expect.stringContaining('index.html: fragmento interno inexistente "/about/#missing"')
+    });
+  });
 });

@@ -16,7 +16,7 @@ Antes de abrir el pull request, confirma:
 
 - [ ] El artículo ayuda a la audiencia definida y no presenta el sitio como CV.
 - [ ] No contiene NOC, Data Center, infraestructura, infrastructure ni detalles operativos.
-- [ ] No contiene datos personales, secretos, credenciales, direcciones internas, información financiera ni otro dato sensible.
+- [ ] No contiene datos personales, secretos, credenciales, direcciones internas, información financiera privada o personal, números de cuenta, registros financieros sensibles ni otro dato reservado. La gestión financiera empresarial genérica sí está permitida.
 - [ ] No promete ni atribuye resultados que no estén sustentados por evidencia pública.
 - [ ] Los enlaces apuntan a destinos públicos revisados y el contenido se entiende sin material privado.
 
