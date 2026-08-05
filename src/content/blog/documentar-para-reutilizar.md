@@ -9,7 +9,7 @@ featured: true
 draft: false
 ---
 
-Una buena documentación no intenta guardar todo. Su trabajo es preservar lo que permitirá actuar mejor la próxima vez: la pregunta original, la decisión tomada, la evidencia y los límites de esa conclusión.
+En un negocio familiar o una PYME de servicios, explicar cómo se realiza una tarea puede reducir repeticiones y facilitar un seguimiento más consistente. Una buena documentación no intenta guardar todo. Su trabajo es preservar lo que permitirá actuar mejor la próxima vez: la pregunta original, la decisión tomada, la evidencia y los límites de esa conclusión.
 
 ## Capturar después de decidir
 

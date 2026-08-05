@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: 'Luis Miguel Malacara Jiménez',
   shortName: 'LM / SYSTEMS',
-  description: 'Sistemas claros para aprender, automatizar y compartir.',
+  description: 'Más alcance, mejor seguimiento de clientes, gestión financiera clara y menos tareas repetitivas para profesionales de la salud, negocios familiares y PYMEs de servicios.',
   url: 'https://malaface.github.io',
   locale: 'es-MX',
   github: 'https://github.com/malaface',

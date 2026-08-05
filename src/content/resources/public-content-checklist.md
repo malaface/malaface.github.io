@@ -9,12 +9,13 @@ featured: false
 draft: false
 ---
 
-Usa esta lista antes de proponer una publicación técnica. Su propósito es reducir omisiones y hacer que la revisión sea consistente.
+Usa esta lista antes de proponer una publicación técnica o de negocio. Su propósito es ayudar a comunicar el valor del trabajo con claridad, ampliar su alcance y reducir omisiones mediante una revisión consistente.
 
 ## Alcance y claridad
 
 - [ ] El título describe un resultado o una pregunta concreta.
 - [ ] La introducción explica para quién es el contenido y qué cubre.
+- [ ] El beneficio para la persona o el negocio aparece antes que la herramienta utilizada.
 - [ ] Cada sección contribuye al propósito declarado.
 - [ ] Los términos técnicos se explican cuando aparecen por primera vez.
 

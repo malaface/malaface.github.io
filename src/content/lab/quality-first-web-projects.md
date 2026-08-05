@@ -9,7 +9,7 @@ featured: true
 draft: false
 ---
 
-La calidad de una aplicación web se construye durante el desarrollo. Reservarla para el final vuelve costosos los cambios y oculta problemas que podrían haberse descubierto con una comprobación pequeña.
+Una aplicación web puede ayudar a un negocio a llegar a más personas y dar un seguimiento más claro, pero sólo si la experiencia inspira confianza y funciona de forma consistente. La calidad se construye durante el desarrollo. Reservarla para el final vuelve costosos los cambios y oculta problemas que podrían haberse descubierto con una comprobación pequeña.
 
 ## Definir resultados observables
 

@@ -2,9 +2,11 @@
 
 ## Propósito
 
-Transformar `malaface.github.io` en la plataforma pública de Luis Miguel Malacara Jiménez: un espacio para compartir automatizaciones, desarrollo de producto, IA aplicada, aprendizaje y conocimiento técnico reutilizable. No es un CV ni una copia del vault privado.
+Transformar `malaface.github.io` en la plataforma pública de Luis Miguel Malacara Jiménez: un espacio orientado a ayudar a profesionales de la salud, negocios familiares y PYMEs de servicios que trabajan con pasión y desean ayudar a otras personas. No es un CV ni una copia del vault privado.
 
-La promesa editorial es: **“Construyo sistemas claros para aprender, automatizar y compartir.”**
+La promesa editorial parte de sus resultados: **más alcance, mejor seguimiento de clientes, gestión financiera empresarial más clara y menos tareas repetitivas**. Automatización, desarrollo de producto, IA aplicada y knowledge systems son medios para avanzar hacia esos resultados, no el centro del mensaje.
+
+La comunicación no atribuye resultados de clientes no verificados. Presenta con honestidad las audiencias a las que Luis busca ayudar, los problemas que desea abordar y los métodos técnicos que está desarrollando.
 
 ## Evidencia usada
 
@@ -15,6 +17,7 @@ El diseño se apoya exclusivamente en fuentes revisadas durante el descubrimient
 - El vault usa Markdown curado con frontmatter OKF, wikilinks, índices y timestamps. Los temas publicables detectados son knowledge systems, AI coding/context engineering, automatización, seguridad de aplicaciones, desarrollo de producto y documentación.
 - El inventario público de GitHub contiene 19 repositorios visibles; los forks, repositorios de curso y proyectos no seleccionados no formarán parte del escaparate por defecto.
 - La única URL de Vercel confirmada durante el descubrimiento es `https://t-ethos.vercel.app`; la CLI de Vercel no tiene credenciales en este entorno.
+- La dirección de marca proporcionada por el propietario define tres audiencias: profesionales de la salud, negocios familiares y PYMEs de servicios; y cuatro resultados: alcance, seguimiento de clientes, claridad financiera empresarial y automatización de tareas repetitivas.
 
 No se infiere experiencia adicional a partir de estas fuentes.
 
@@ -25,7 +28,7 @@ Estas reglas son invariantes de producto y se validan en CI:
 1. El sitio **no accede al vault de Obsidian**. No habrá scripts de lectura, checkout del vault, tokens de vault, rutas de vault ni sincronización con Obsidian.
 2. Las notas públicas vivirán en este repositorio, bajo `src/content/`. Publicar una idea derivada del vault requiere crear o editar manualmente un archivo público en este repositorio.
 3. El sitio solo puede decir que Obsidian se usa como sistema personal de conocimiento y explicar aplicaciones generales de ese método. No muestra contenido, enlaces, nombres de notas, grafo, rutas, metadatos ni datos del vault.
-4. Se prohíben NOC, Data Center, infraestructura operativa, servidores, topologías, runbooks privados, incidentes, credenciales, IPs, sistemas internos, clientes, finanzas, diario y datos personales sensibles.
+4. Se prohíben NOC, Data Center, infraestructura operativa, servidores, topologías, runbooks privados, incidentes, credenciales, IPs, sistemas internos, datos identificables de clientes, datos financieros privados o personales, números de cuenta, registros financieros sensibles, diario personal y datos personales sensibles. La gestión financiera genérica de un negocio o una PYME sí es contenido público permitido.
 5. El importador de contenido no existe por diseño. Un validador local/CI revisa el contenido que ya vive en el repositorio y rechaza patrones, categorías y rutas bloqueados.
 6. GitHub y Vercel solo suministran metadatos públicos o credenciales explícitamente configuradas por el usuario; nunca se publican secretos ni URLs de preview.
 
@@ -39,7 +42,7 @@ No se elegirá Next.js export estático porque su complejidad no aporta valor en
 
 ## Dirección visual
 
-La dirección aprobada es **Command Center**: interfaz oscura por defecto, precisa, editorial y legible; acentos verdes reservados para estado y navegación técnica. La página evita estética militar, telemetría falsa o cualquier referencia a NOC, Data Center o infraestructura.
+La dirección aprobada es **Command Center**: interfaz oscura por defecto, precisa, editorial y legible; acentos verdes reservados para estado y navegación técnica. La jerarquía visual presenta primero las audiencias y sus resultados; las capacidades técnicas aparecen como medios de apoyo. La página evita estética militar, telemetría falsa o cualquier referencia a NOC, Data Center o infraestructura.
 
 Elementos visuales:
 
@@ -54,7 +57,7 @@ Elementos visuales:
 
 | Ruta | Propósito | Fuente de contenido |
 | --- | --- | --- |
-| `/` | Identidad, especialidades verificadas, notas y proyectos destacados | Configuración editorial y colecciones públicas |
+| `/` | Audiencias, resultados buscados, identidad, medios técnicos verificados, notas y proyectos destacados | Configuración editorial y colecciones públicas |
 | `/sobre-mi/` | Narrativa de método, aprendizaje y construcción de sistemas | Archivo manual público |
 | `/knowledge-hub/` | Índice de artículos técnicos reutilizables | Colección `knowledge` |
 | `/knowledge-hub/[slug]/` | Artículo con breadcrumbs, tags, tiempo de lectura y relacionados | Markdown/MDX público |
@@ -117,7 +120,7 @@ El conector es opcional y se activa solo con `VERCEL_TOKEN` y, si aplica, `VERCE
 
 - `BaseLayout`: metadatos, navegación, pie, tema, Open Graph y analítica opcional.
 - `CommandHeader`: identidad, navegación desktop/móvil y búsqueda.
-- `Hero`: propuesta de valor y especialidades con evidencia editorial.
+- `Hero`: audiencias y resultados buscados primero; especialidades técnicas con evidencia editorial como medios.
 - `ContentCard`, `ProjectCard`, `TagList`: tarjetas consistentes y accesibles.
 - `TableOfContents`: generado de encabezados de artículo.
 - `RelatedContent`: puntuación por tag/categoría, sin recomendar borradores.
@@ -146,7 +149,7 @@ El workflow de `main` repite las validaciones, actualiza metadatos de GitHub/Ver
 1. `malaface.github.io` construye y despliega como sitio Astro estático en GitHub Pages.
 2. Ningún comando, workflow, dependencia ni configuración lee o menciona una ruta, token o contenido del vault.
 3. Ningún contenido o navegación contiene NOC, Data Center o datos de infraestructura/operación privada.
-4. Inicio responde visualmente quién es Luis, qué construye y qué conocimiento comparte sin parecer CV.
+4. Inicio explica primero cómo Luis busca ayudar a profesionales de la salud, negocios familiares y PYMEs de servicios mediante mayor alcance, mejor seguimiento de clientes, claridad financiera empresarial y automatización de tareas repetitivas; después presenta la tecnología como medio, sin parecer CV ni atribuir resultados no verificados.
 5. Las rutas del sitemap funcionan en móvil y escritorio, con navegación por teclado.
 6. Knowledge Hub, Playbooks, Blog, Lab y Recursos se alimentan solo de Markdown/MDX público tipado.
 7. Búsqueda, RSS, sitemap, tags, tabla de contenidos, relacionados y metadatos sociales se generan correctamente.

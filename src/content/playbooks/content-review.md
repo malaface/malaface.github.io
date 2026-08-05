@@ -9,7 +9,7 @@ featured: false
 draft: false
 ---
 
-Este playbook convierte la revisión editorial en una secuencia breve y repetible. Está pensado para contenido técnico público que debe ser claro, útil y verificable sin depender de contexto privado.
+Este playbook convierte la revisión editorial en una secuencia breve y repetible. Puede apoyar a profesionales de la salud, negocios familiares y PYMEs de servicios que desean comunicar mejor su trabajo y llegar a más personas. La automatización ordena la revisión; el resultado buscado es un mensaje claro, útil y verificable.
 
 ## 1. Confirmar el propósito
 

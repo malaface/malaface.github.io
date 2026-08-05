@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` (recommended) or `superpowers:executing-plans` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build and deploy an Astro-based public personal technical platform that presents curated, safe knowledge and selected projects without any access to the Obsidian vault or references to NOC/Data Center work.
+**Goal:** Build and deploy an Astro-based public platform that helps health professionals, family businesses and service SMEs pursue greater reach, better client follow-up, clearer business financial management and automation of repetitive tasks, without any access to the Obsidian vault or references to NOC/Data Center work.
 
 **Architecture:** Astro statically compiles Markdown/MDX content stored only in this repository. Typed content collections, a privacy validator, selected GitHub/Vercel metadata generators, and a Command Center editorial UI produce a GitHub Pages artifact. External connectors are optional and only enrich explicitly selected public projects.
 
@@ -13,7 +13,9 @@
 - Build output is static and deploys at `https://malaface.github.io` without a runtime server.
 - No file, setting, secret, workflow or script may access the Obsidian vault or mention its filesystem path.
 - Do not add an Obsidian importer, vault checkout, vault token, wikilink importer or backlink importer.
-- Reject NOC, Data Center, infrastructure, servers, operational runbooks, incidents, credentials, IP addresses, internal systems, financial information, personal diary information and sensitive data in public content.
+- Lead public copy with outcomes for health professionals, family businesses and service SMEs that care deeply about their work and helping others: greater reach, better client follow-up, clearer business financial management and fewer repetitive tasks.
+- Present automation, product development, AI coding and knowledge systems as means to those outcomes; do not claim completed client outcomes without evidence.
+- Reject NOC, Data Center, infrastructure, servers, operational runbooks, incidents, credentials, IP addresses, internal systems, identifiable client data, private or personal financial data, account numbers, sensitive financial records, personal diary information and sensitive data in public content. Generic business financial management is allowed.
 - Public content is created only in `src/content/`; every entry requires typed frontmatter and `draft: false` before build output.
 - GitHub/Vercel data is opt-in through the project allowlist; forks, previews and unselected repositories are not displayed.
 - Use Spanish for site copy and accessibility labels.
@@ -147,7 +149,7 @@ Create `src/config/site.ts`:
 export const siteConfig = {
   name: 'Luis Miguel Malacara Jiménez',
   shortName: 'LM / SYSTEMS',
-  description: 'Sistemas claros para aprender, automatizar y compartir.',
+  description: 'Más alcance, mejor seguimiento de clientes, gestión financiera clara y menos tareas repetitivas para profesionales de la salud, negocios familiares y PYMEs de servicios.',
   url: 'https://malaface.github.io',
   locale: 'es-MX',
   github: 'https://github.com/malaface',
@@ -225,6 +227,8 @@ git commit -m "feat: initialize Astro technical platform"
 
 **Files:**
 - Create: `src/config/content-policy.ts`
+- Create: `src/config/public-content-policy.mjs`
+- Create: `src/config/public-content-policy.d.mts`
 - Create: `src/content.config.ts`
 - Create: `scripts/validate-public-content.mjs`
 - Create: `tests/content-policy.test.ts`
@@ -233,6 +237,7 @@ git commit -m "feat: initialize Astro technical platform"
 
 **Interfaces:**
 - `assertPublicContent(source: string, filePath: string): string[]` returns policy violations.
+- The TypeScript API and CLI import the same word-aware `assertPublicContent` implementation.
 - `getPublishedEntries(collection)` returns only `draft: false` entries sorted newest first.
 - Collections are `knowledge`, `playbooks`, `blog`, `lab` and `resources`.
 
@@ -249,12 +254,29 @@ describe('public content policy', () => {
     expect(assertPublicContent('Automatización con scripts reutilizables.', 'safe.md')).toEqual([]);
   });
 
+  it('allows Spanish words containing a blocked abbreviation', () => {
+    expect(assertPublicContent('El conocimiento ayuda a reconocer oportunidades.', 'spanish.md')).toEqual([]);
+  });
+
+  it('allows generic business financial management', () => {
+    expect(assertPublicContent('Gestión financiera para PYMEs.', 'business.md')).toEqual([]);
+  });
+
   it('rejects blocked work and sensitive terms case-insensitively', () => {
     const source = 'Lecciones de NOC y Data Center con la IP 10.0.0.5';
     expect(assertPublicContent(source, 'unsafe.md')).toEqual([
       'unsafe.md: contiene término bloqueado "noc"',
       'unsafe.md: contiene término bloqueado "data center"',
       'unsafe.md: contiene una dirección IP'
+    ]);
+  });
+
+  it('rejects private financial data and account numbers', () => {
+    const source = 'Número de cuenta, datos financieros personales y private financial data.';
+    expect(assertPublicContent(source, 'private-finance.md')).toEqual([
+      'private-finance.md: contiene término bloqueado "número de cuenta"',
+      'private-finance.md: contiene término bloqueado "datos financieros personales"',
+      'private-finance.md: contiene término bloqueado "private financial data"'
     ]);
   });
 });
@@ -270,25 +292,49 @@ Expected: failure because the policy and content helpers do not exist.
 
 - [ ] **Step 3: Implement the policy and schemas**
 
-Create `src/config/content-policy.ts`:
+Create `src/config/public-content-policy.mjs` as the shared runtime implementation:
 
-```ts
-const blockedTerms = [
-  'noc', 'data center', 'datacenter', 'infraestructura', 'servidor', 'runbook',
-  'incidente', 'credencial', 'contraseña', 'ip interna', 'finanzas', 'diario',
-  'sensitive', 'archives'
+```js
+export const blockedTerms = [
+  'noc', 'data center', 'datacenter', 'centro de datos',
+  'infraestructura', 'infrastructure',
+  'servidor', 'servidores', 'server', 'servers',
+  'runbook', 'runbooks', 'incidente', 'incidentes', 'incident', 'incidents',
+  'credencial', 'credenciales', 'credential', 'credentials',
+  'contraseña', 'contraseñas', 'password', 'passwords',
+  'ip interna', 'ips internas', 'internal ip', 'internal ips',
+  'número de cuenta', 'numero de cuenta', 'números de cuenta', 'numeros de cuenta',
+  'account number', 'account numbers', 'datos financieros personales',
+  'personal financial data', 'private financial data',
+  'registros financieros sensibles', 'sensitive financial records',
+  'diario', 'sensitive', 'sensible', 'archives', 'archivos'
 ];
-const ipAddress = /\b(?:\d{1,3}\.){3}\d{1,3}\b/;
 
-export function assertPublicContent(source: string, filePath: string): string[] {
-  const lower = source.toLowerCase();
+const ipAddress = /\b(?:\d{1,3}\.){3}\d{1,3}\b/;
+const wordCharacter = '\\p{L}\\p{N}_';
+
+function escapeRegExp(term) {
+  return term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function containsBlockedTerm(source, term) {
+  const pattern = new RegExp(
+    `(?:^|[^${wordCharacter}])${escapeRegExp(term)}(?=$|[^${wordCharacter}])`,
+    'iu'
+  );
+  return pattern.test(source);
+}
+
+export function assertPublicContent(source, filePath) {
   const violations = blockedTerms
-    .filter((term) => lower.includes(term))
+    .filter((term) => containsBlockedTerm(source, term))
     .map((term) => `${filePath}: contiene término bloqueado "${term}"`);
   if (ipAddress.test(source)) violations.push(`${filePath}: contiene una dirección IP`);
   return violations;
 }
 ```
+
+Create `src/config/content-policy.ts` as `export { assertPublicContent } from './public-content-policy.mjs';` and declare the shared API in `src/config/public-content-policy.d.mts`. Do not block generic `finanzas`, `financial` or `gestión financiera`; block only the explicit private/personal financial patterns in `blockedTerms`.
 
 Create `src/content.config.ts` with one shared Zod schema requiring `title`, `description`, `publishedAt`, `section`, `category`, `tags`, `featured` and `draft`; allow optional `updatedAt`, `githubRepo` and `externalUrl`. Define allowed categories exactly as `automation`, `knowledge-systems`, `ai-coding`, `application-security`, `product-building` and `developer-experience`.
 
@@ -322,7 +368,7 @@ Expected: both commands exit 0 with no source content yet.
 - [ ] **Step 5: Commit content boundaries**
 
 ```bash
-git add src/config/content-policy.ts src/content.config.ts src/lib/content.ts scripts/validate-public-content.mjs tests/content-policy.test.ts tests/content-utils.test.ts
+git add src/config/content-policy.ts src/config/public-content-policy.mjs src/config/public-content-policy.d.mts src/content.config.ts src/lib/content.ts scripts/validate-public-content.mjs tests/content-policy.test.ts tests/content-utils.test.ts
 git commit -m "feat: add public content policy"
 ```
 
@@ -345,6 +391,7 @@ git commit -m "feat: add public content policy"
 **Interfaces:**
 - Every entry is a self-contained public document with validated frontmatter.
 - `sobre-mi`, `now` and `contacto` contain no unverified contact channel beyond GitHub.
+- Public copy leads with outcomes for health professionals, family businesses and service SMEs; technology is presented as the means and no completed client result is claimed without evidence.
 
 - [ ] **Step 1: Write the failing public-content test**
 
@@ -373,9 +420,9 @@ draft: false
 ---
 ```
 
-Write original Spanish prose that explains the verified pattern: planear con contexto, documentar decisiones y validar antes de entregar. Do not quote or copy any private note. Use the same schema for the other five entries, grounded only in: Supabase RLS, documentación reutilizable, pruebas de aplicaciones web, automatización y knowledge systems. Do not include NOC, Data Center or infrastructure content.
+Write original Spanish prose that explains the verified pattern: planear con contexto, documentar decisiones y validar antes de entregar. Do not quote or copy any private note. Use the same schema for the other five entries, grounded only in: Supabase RLS, documentación reutilizable, pruebas de aplicaciones web, automatización y knowledge systems. Connect relevant copy to the approved audiences and desired outcomes without claiming completed client results. Lead with reach, follow-up, business financial clarity or relief from repetitive tasks where relevant; technology remains the means. Do not include NOC, Data Center or infrastructure content. Generic business financial management is allowed, but private or personal financial data, account numbers, credentials and sensitive records are prohibited.
 
-Write `src/pages/sobre-mi.astro` as a professional narrative about clarity, automation, documentation and continuous learning; `src/pages/now.astro` as an explicit public status page with the current topics `AI coding`, `desarrollo de producto` and `knowledge systems`; write `src/pages/contacto.astro` with a GitHub link and an explicit message that other channels will be added only when configured.
+Write `src/pages/sobre-mi.astro` as a professional narrative about helping health professionals, family businesses and service SMEs through clarity, automation, documentation and continuous learning. Write `src/pages/now.astro` as an explicit public status page that names the four desired outcomes before the current means `AI coding`, `desarrollo de producto` and `knowledge systems`, and explicitly avoids attributing completed client results. Write `src/pages/contacto.astro` with a GitHub link and an explicit message that other channels will be added only when configured.
 
 - [ ] **Step 4: Verify source safety**
 
@@ -533,13 +580,14 @@ Implement `ContentLayout.astro` to render breadcrumb navigation, `h1`, dates, re
 
 Implement `index.astro` with the approved home sequence:
 
-1. Command Center hero: “Construyo sistemas claros para aprender, automatizar y compartir.”
-2. Evidence-based specialties: Automatización, IA aplicada, Desarrollo de producto, Knowledge systems and Seguridad de aplicaciones.
-3. Featured public entries.
-4. Selected projects and safe activity feed.
-5. CTA to Knowledge Hub and Playbooks.
+1. Outcome-led hero for health professionals, family businesses and service SMEs that care about their work and helping others: greater reach, better client follow-up, clearer business financial management and fewer repetitive tasks.
+2. Honest positioning that these are outcomes Luis seeks to support, not completed client results being claimed.
+3. Evidence-based technical means: Automatización, IA aplicada, Desarrollo de producto, Knowledge systems and Seguridad de aplicaciones.
+4. Featured public entries connected to useful business outcomes where relevant.
+5. Selected projects and safe activity feed.
+6. CTA to Knowledge Hub and Playbooks.
 
-Hub index pages must display only categories with published entries. The `tags/[tag]` page must return 404 for an unknown tag. Render no NOC/Data Center/infrastructure terminology in navigation, copy or category labels.
+Hub index pages must display only categories with published entries. The `tags/[tag]` page must return 404 for an unknown tag. Preserve the audience/outcome hierarchy in headings and introductory copy. Render no NOC/Data Center/infrastructure terminology in navigation, copy or category labels. Allow generic business financial-management education, but never render private or personal financial data, account numbers, credentials or sensitive records.
 
 - [ ] **Step 4: Add route assertions and verify build**
 

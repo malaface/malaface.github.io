@@ -9,7 +9,7 @@ featured: true
 draft: false
 ---
 
-Construir software con apoyo de IA mejora cuando el contexto deja de ser una conversación improvisada y se convierte en un material de trabajo claro. El objetivo no es acumular instrucciones, sino reunir la información que permite tomar una decisión correcta: propósito, límites, interfaces existentes y evidencia esperada.
+Cuando un proyecto busca ampliar el alcance de un negocio, mejorar el seguimiento de clientes o reducir tareas repetitivas, la tecnología sólo es útil si parte de un resultado claro. Construir software con apoyo de IA mejora cuando el contexto deja de ser una conversación improvisada y se convierte en un material de trabajo comprensible. El objetivo no es acumular instrucciones, sino reunir la información que permite tomar una decisión correcta: propósito, límites, interfaces existentes y evidencia esperada.
 
 ## Planear con contexto
 
@@ -27,4 +27,4 @@ La documentación más útil vive cerca del trabajo que describe y utiliza nombr
 
 La entrega no termina al escribir el cambio. Cada criterio necesita una comprobación proporcional: pruebas automatizadas para el comportamiento, análisis estático para los contratos y revisión visual cuando la presentación importa.
 
-El ciclo completo es sencillo: entender el contexto, formular un plan, documentar las decisiones y ejecutar verificaciones recientes. Repetido con disciplina, convierte lo aprendido en una capacidad reutilizable.
+El ciclo completo es sencillo: entender el contexto, formular un plan, documentar las decisiones y ejecutar verificaciones recientes. Repetido con disciplina, convierte el conocimiento del proyecto en una capacidad reutilizable y mantiene el foco en las personas a quienes busca ayudar.
