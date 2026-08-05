@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config/site';
+---
+
+<BaseLayout title="Contacto" description="Canal público de contacto de Luis Miguel Malacara Jiménez.">
+  <header class="page-intro page-intro--compact">
+    <p class="eyebrow">Contacto</p>
+    <h1>Conversemos en GitHub</h1>
+    <p>
+      Por ahora, el único canal público configurado es
+      <a href={siteConfig.github} rel="me">mi perfil de GitHub</a>.
+    </p>
+    <p class="page-intro__note">
+      Agregaré otros canales únicamente cuando estén configurados y listos para uso público.
+    </p>
+  </header>
+</BaseLayout>

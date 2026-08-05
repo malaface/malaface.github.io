@@ -1,0 +1,24 @@
+---
+import { siteConfig } from '../config/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div>
+      <p class="site-footer__brand">{siteConfig.shortName}</p>
+      <p class="site-footer__statement">
+        Sistemas claros para negocios y profesionales que buscan ayudar mejor a otras personas.
+      </p>
+    </div>
+    <div class="site-footer__meta">
+      <nav aria-label="Navegación secundaria">
+        <a href="/sobre-mi/">Sobre mí</a>
+        <a href="/contacto/">Contacto</a>
+        <a href="/rss.xml">RSS</a>
+      </nav>
+      <p>© {year} {siteConfig.name}</p>
+    </div>
+  </div>
+</footer>

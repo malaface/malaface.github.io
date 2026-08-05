@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import ContentCard from '../../components/ContentCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { categoryLabels, contentHref, getPublishedEntries } from '../../lib/content';
+
+const entries = getPublishedEntries(await getCollection('blog'));
+const categories = [...new Set(entries.map((entry) => entry.data.category))];
+---
+
+<BaseLayout
+  title="Blog"
+  description="Notas públicas sobre aprendizaje, decisiones y prácticas para construir capacidades sostenibles."
+>
+  <header class="page-intro">
+    <p class="eyebrow">Notas públicas</p>
+    <h1>Aprendizajes que pueden volver a usarse</h1>
+    <p>
+      Reflexiones sobre cómo documentar decisiones y sostener mejoras que ayuden a negocios y profesionales a servir
+      con más claridad.
+    </p>
+  </header>
+
+  {categories.map((category) => (
+    <section class="content-section" aria-labelledby={`category-${category}`}>
+      <div class="section-heading">
+        <p class="eyebrow">Tema publicado</p>
+        <h2 id={`category-${category}`}>{categoryLabels[category]}</h2>
+      </div>
+      <div class="content-grid">
+        {entries
+          .filter((entry) => entry.data.category === category)
+          .map((entry) => <ContentCard entry={entry} href={contentHref(entry)} />)}
+      </div>
+    </section>
+  ))}
+</BaseLayout>

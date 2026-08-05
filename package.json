@@ -1,0 +1,36 @@
+{
+  "name": "malaface-github-io",
+  "private": true,
+  "packageManager": "pnpm@11.10.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "check": "astro check",
+    "test": "pnpm build && vitest run",
+    "test:e2e": "playwright test",
+    "lighthouse": "lhci autorun",
+    "check:links": "node scripts/check-built-links.mjs",
+    "validate:public": "node scripts/validate-public-content.mjs",
+    "validate:built": "node scripts/validate-public-content.mjs --built dist",
+    "build": "pnpm validate:public && astro check && astro build && pnpm validate:built && pagefind --site dist",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "latest",
+    "@astrojs/rss": "latest",
+    "@astrojs/sitemap": "latest",
+    "astro": "latest",
+    "pagefind": "latest",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "latest",
+    "@types/node": "latest",
+    "@vitest/coverage-v8": "latest",
+    "lighthouse": "latest",
+    "typescript": "^6.0.3",
+    "vitest": "latest"
+  }
+}

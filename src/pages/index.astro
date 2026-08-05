@@ -1,0 +1,152 @@
+---
+import { getCollection } from 'astro:content';
+import ActivityFeed from '../components/ActivityFeed.astro';
+import ContentCard from '../components/ContentCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import projectData from '../data/live-projects.json';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { contentHref, getPublishedEntries, type PublicEntry } from '../lib/content';
+import { getHomeProject, parseProjectRecords } from '../lib/projects';
+import { siteConfig } from '../config/site';
+
+const collections = await Promise.all([
+  getCollection('knowledge'),
+  getCollection('playbooks'),
+  getCollection('blog'),
+  getCollection('lab'),
+  getCollection('resources')
+]);
+const entries = getPublishedEntries(collections.flat() as PublicEntry[]);
+const featuredEntries = entries.filter((entry) => entry.data.featured).slice(0, 4);
+const recentEntries = entries.slice(0, 4);
+const projects = parseProjectRecords(projectData);
+const homeProject = getHomeProject(projects);
+
+const outcomes = [
+  { number: '01', title: 'Mayor alcance', description: 'Comunicar mejor el valor del trabajo para llegar a más personas.' },
+  { number: '02', title: 'Mejor seguimiento', description: 'Dar continuidad clara y consistente a cada relación con clientes.' },
+  { number: '03', title: 'Gestión financiera clara', description: 'Entender mejor la gestión financiera del negocio para decidir con contexto.' },
+  { number: '04', title: 'Menos repetición', description: 'Liberar atención al reducir tareas manuales que pueden simplificarse.' }
+];
+
+const capabilities = [
+  ['Automatización', 'Convertir pasos repetibles en flujos comprensibles y comprobables.'],
+  ['IA aplicada', 'Usar contexto, criterios y validación para apoyar decisiones y productos.'],
+  ['Desarrollo de producto', 'Traducir necesidades reales en experiencias útiles y accesibles.'],
+  ['Sistemas de conocimiento', 'Conservar decisiones y aprendizajes para volver a utilizarlos.'],
+  ['Seguridad de aplicaciones', 'Diseñar límites de acceso como parte del producto desde el inicio.']
+];
+---
+
+<BaseLayout title="Inicio" description={siteConfig.description}>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__copy">
+      <p class="eyebrow">Resultados para quienes ayudan a otras personas</p>
+      <h1 id="hero-title">Más alcance y mejor seguimiento para quienes ayudan a otros</h1>
+      <p class="hero__lede">
+        Busco apoyar a profesionales de la salud, negocios familiares y PYMEs de servicios que cuidan su trabajo:
+        mayor alcance, mejor seguimiento de clientes, gestión financiera del negocio más clara y menos tareas repetitivas.
+      </p>
+      <div class="hero__actions">
+        <a class="button-link" href="/knowledge-hub/">Explorar conocimiento <span aria-hidden="true">→</span></a>
+        <a class="text-link" href="/sobre-mi/">Conocer el enfoque <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <aside class="positioning-note" aria-label="Alcance de esta propuesta">
+      <p class="eyebrow">Posicionamiento honesto</p>
+      <p>
+        Son resultados que busco ayudar a construir, no resultados concluidos de clientes ni afirmaciones de casos que
+        todavía no cuentan con evidencia pública.
+      </p>
+    </aside>
+  </section>
+
+  <section class="home-section" aria-labelledby="outcomes-title">
+    <div class="section-heading section-heading--wide">
+      <div>
+        <p class="eyebrow">Primero, el resultado</p>
+        <h2 id="outcomes-title">Cuatro mejoras que orientan el trabajo</h2>
+      </div>
+      <p>La herramienta se elige después de entender a las personas, el proceso y la decisión que necesita apoyo.</p>
+    </div>
+    <div class="outcome-grid">
+      {outcomes.map((outcome) => (
+        <article>
+          <span>{outcome.number}</span>
+          <h3>{outcome.title}</h3>
+          <p>{outcome.description}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="home-section" aria-labelledby="capabilities-title">
+    <div class="section-heading section-heading--wide">
+      <div>
+        <p class="eyebrow">Después, los medios</p>
+        <h2 id="capabilities-title">Capacidades técnicas con propósito</h2>
+      </div>
+      <p>Cada capacidad se presenta por la utilidad que puede apoyar, no como un fin en sí misma.</p>
+    </div>
+    <ol class="capability-list">
+      {capabilities.map(([title, description], index) => (
+        <li>
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          <h3>{title}</h3>
+          <p>{description}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="home-section" aria-labelledby="featured-title">
+    <div class="section-heading section-heading--wide">
+      <div>
+        <p class="eyebrow">Evidencia pública</p>
+        <h2 id="featured-title">Contenido destacado</h2>
+      </div>
+      <a class="text-link" href="/knowledge-hub/">Ver todo el conocimiento <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="content-grid">
+      {featuredEntries.map((entry) => <ContentCard entry={entry} href={contentHref(entry)} />)}
+    </div>
+  </section>
+
+  <section class="home-section" aria-labelledby="public-work-title">
+    <div class="section-heading section-heading--wide">
+      <div>
+        <p class="eyebrow">Trabajo público seleccionado</p>
+        <h2 id="public-work-title">Proyectos y actividad comprobable</h2>
+      </div>
+      <a class="text-link" href="/live-projects/">Ver todos los proyectos <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="public-work-grid">
+      {homeProject ? (
+        <ProjectCard project={homeProject} />
+      ) : (
+        <article class="project-placeholder">
+          <div>
+            <p class="eyebrow">Catálogo manual</p>
+            <h2>Sin páginas aprobadas todavía</h2>
+            <p>Aún no hay páginas de proyectos aprobadas para mostrar.</p>
+            <p>Solo aparecerán aquí URLs públicas proporcionadas y aprobadas manualmente por el propietario.</p>
+          </div>
+          <a class="text-link" href="/live-projects/">Ver estado del catálogo <span aria-hidden="true">→</span></a>
+        </article>
+      )}
+      <ActivityFeed entries={recentEntries} />
+    </div>
+  </section>
+
+  <section class="home-cta" aria-labelledby="cta-title">
+    <div>
+      <p class="eyebrow">Siguiente paso</p>
+      <h2 id="cta-title">Pasar de una necesidad a una decisión clara</h2>
+      <p>Explora explicaciones técnicas o usa una guía repetible para empezar con un alcance concreto.</p>
+    </div>
+    <div class="home-cta__actions">
+      <a class="button-link" href="/knowledge-hub/">Ir a Conocimiento <span aria-hidden="true">→</span></a>
+      <a class="text-link" href="/playbooks/">Abrir Guías <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,42 @@
+---
+import ProjectCard from '../../components/ProjectCard.astro';
+import projectData from '../../data/live-projects.json';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getVisibleProjects, parseProjectRecords } from '../../lib/projects';
+
+const projects = getVisibleProjects(parseProjectRecords(projectData));
+---
+
+<BaseLayout
+  title="Proyectos"
+  description="Páginas públicas de proyectos añadidas únicamente después de recibir aprobación y una URL confirmada."
+>
+  <header class="page-intro">
+    <p class="eyebrow">Catálogo manual</p>
+    <h1>Páginas públicas aprobadas</h1>
+    <p>
+      Este espacio muestra solo páginas que el propietario haya aprobado manualmente y cuya URL pública haya
+      proporcionado de forma explícita.
+    </p>
+  </header>
+
+  <section class="content-section" aria-labelledby="selected-projects-title">
+    <div class="section-heading section-heading--wide">
+      <div>
+        <p class="eyebrow">Trabajo público seleccionado</p>
+        <h2 id="selected-projects-title">Proyectos disponibles</h2>
+      </div>
+      <p>No se descubren ni agregan proyectos automáticamente.</p>
+    </div>
+    {projects.length > 0 ? (
+      <div class="project-grid">
+        {projects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    ) : (
+      <div class="empty-state">
+        <p>Aún no hay páginas de proyectos aprobadas para mostrar.</p>
+        <p>Cuando el propietario proporcione una URL pública aprobada, aparecerá aquí.</p>
+      </div>
+    )}
+  </section>
+</BaseLayout>

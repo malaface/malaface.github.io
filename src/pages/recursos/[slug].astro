@@ -1,0 +1,30 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import ContentLayout from '../../layouts/ContentLayout.astro';
+import { getPublishedEntries, relatedEntries, type PublicEntry } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const entries = getPublishedEntries(await getCollection('resources'));
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+interface Props {
+  entry: CollectionEntry<'resources'>;
+}
+
+const { entry } = Astro.props as Props;
+const { Content, headings } = await render(entry);
+const collections = await Promise.all([
+  getCollection('knowledge'),
+  getCollection('playbooks'),
+  getCollection('blog'),
+  getCollection('lab'),
+  getCollection('resources')
+]);
+const candidates = collections.flat() as PublicEntry[];
+const related = relatedEntries(entry, candidates);
+---
+
+<ContentLayout entry={entry} headings={headings} related={related}>
+  <Content />
+</ContentLayout>

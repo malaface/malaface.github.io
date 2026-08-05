@@ -1,0 +1,30 @@
+---
+import TagList from './TagList.astro';
+import { formatPublicDate } from '../lib/content';
+import type { ProjectRecord } from '../lib/projects';
+
+interface Props {
+  project: ProjectRecord;
+}
+
+const { project } = Astro.props;
+const updatedAt = formatPublicDate(new Date(project.updatedAt));
+---
+
+<article class="project-card">
+  <div class="project-card__meta">
+    <span class="status-label status-label--active">
+      <span aria-hidden="true"></span>
+      Página verificada
+    </span>
+    <time datetime={project.updatedAt}>Actualizado {updatedAt}</time>
+  </div>
+  <h2>{project.name}</h2>
+  <p>{project.description}</p>
+  <TagList tags={project.technologies} linked={false} label="Tecnologías" />
+  <div class="project-card__actions">
+    <a class="button-link" href={project.productionUrl} rel="noreferrer">
+      Abrir página <span aria-hidden="true">↗</span>
+    </a>
+  </div>
+</article>

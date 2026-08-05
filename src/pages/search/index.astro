@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Buscar"
+  description="Busca artículos, guías y recursos en el índice local de este sitio."
+>
+  <section class="page-intro page-intro--compact" aria-labelledby="search-page-title">
+    <p class="eyebrow">Búsqueda local</p>
+    <h1 id="search-page-title">Encontrar contenido público</h1>
+    <p>
+      Consulta el índice estático del sitio. La búsqueda se ejecuta en tu navegador y no envía tus términos a un
+      servicio externo.
+    </p>
+    <a class="button-link" href="/search/" data-search-open>
+      Abrir búsqueda <span aria-hidden="true">→</span>
+    </a>
+  </section>
+</BaseLayout>

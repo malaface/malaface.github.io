@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">LM / SYSTEMS</title>
+  <desc id="description">Sistemas claros para negocios que ayudan a otros</desc>
+  <rect width="1200" height="630" fill="#0a0d0c"/>
+  <path d="M0 0h1200v10H0z" fill="#9db7ff"/>
+  <path d="M82 92h1036v446H82z" fill="none" stroke="#29312e" stroke-width="2"/>
+  <circle cx="134" cy="143" r="8" fill="#9db7ff"/>
+  <text x="160" y="154" fill="#e9efec" font-family="ui-monospace, SFMono-Regular, monospace" font-size="34" letter-spacing="5">LM / SYSTEMS</text>
+  <text x="130" y="310" fill="#f4f7f5" font-family="system-ui, sans-serif" font-size="66" font-weight="650">Resultados claros.</text>
+  <text x="130" y="390" fill="#f4f7f5" font-family="system-ui, sans-serif" font-size="66" font-weight="650">Tecnología con propósito.</text>
+  <text x="132" y="470" fill="#9eaaa4" font-family="system-ui, sans-serif" font-size="26">Para profesionales y negocios que ayudan a otras personas.</text>
+</svg>
