@@ -129,6 +129,18 @@ describe('static site routes', () => {
     expect(html).toContain('no resultados concluidos');
   });
 
+  it('distributes home calls to action across projects, resources, blog, contact and guides', async () => {
+    const html = await readFile(builtPage('index.html'), 'utf8');
+
+    expect(html).toContain('href="/live-projects/">Ver proyectos');
+    expect(html).toContain('href="/recursos/">Explorar recursos');
+    expect(html).toContain('href="/blog/">Ir al Blog');
+    expect(html).toContain('href="/contacto/">Contactar');
+    expect(html).toContain('href="/playbooks/">Abrir Guías');
+    expect(html).not.toContain('>Explorar conocimiento');
+    expect(html).not.toContain('>Ir a Conocimiento');
+  });
+
   it('shows an honest empty project state while keeping public article activity', async () => {
     const homeHtml = await readFile(builtPage('index.html'), 'utf8');
     const projectsHtml = await readFile(builtPage('live-projects/index.html'), 'utf8');
