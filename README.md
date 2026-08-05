@@ -1,5 +1,7 @@
 # Plataforma técnica personal
 
+Marca personal para ayudar a profesionales de salud, negocios familiares y PYMEs de servicios mediante contenido técnico público. No es un CV. Para publicar contenido, curar páginas aprobadas en Live Projects o revertir un despliegue, sigue la fuente única de operación: [docs/maintenance.md](docs/maintenance.md). Consulta [CONTRIBUTING.md](CONTRIBUTING.md) antes de enviar cambios.
+
 ## Desarrollo
 
 ```bash
