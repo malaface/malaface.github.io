@@ -7,6 +7,7 @@
     "check": "astro check",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "lighthouse": "lhci autorun",
     "validate:public": "node scripts/validate-public-content.mjs",
     "build": "pnpm validate:public && astro check && astro build && pagefind --site dist",
     "preview": "astro preview"
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@lhci/cli": "^0.15.1",
     "@playwright/test": "latest",
     "@types/node": "latest",
     "@vitest/coverage-v8": "latest",
