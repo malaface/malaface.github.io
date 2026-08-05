@@ -1,37 +1,34 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="es-MX">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Now | Luis Miguel Malacara Jiménez</title>
-    <meta
-      name="description"
-      content="Estado público actual sobre resultados de negocio y medios técnicos en exploración."
-    />
-  </head>
-  <body>
-    <main>
-      <header>
-        <p>Estado público actual</p>
-        <h1>En qué resultados estoy enfocado ahora</h1>
-      </header>
-
+<BaseLayout
+  title="Ahora"
+  description="Estado público actual sobre resultados de negocio y medios técnicos en exploración."
+>
+  <article class="editorial-page">
+    <header class="page-intro page-intro--compact">
+      <p class="eyebrow">Estado público actual</p>
+      <h1>En qué resultados estoy enfocado ahora</h1>
       <p>
         Estoy explorando cómo ayudar a profesionales de la salud, negocios familiares y PYMEs de servicios a ampliar
-        su alcance, mejorar el seguimiento de clientes, entender mejor la gestión financiera del negocio y automatizar
-        tareas repetitivas. Son áreas de enfoque, no resultados atribuidos a trabajos ya realizados.
+        su alcance, mejorar el seguimiento de clientes, entender mejor la gestión financiera del negocio y reducir
+        tareas repetitivas.
       </p>
+      <p class="page-intro__note">
+        Son áreas de enfoque, no resultados atribuidos a trabajos ya realizados.
+      </p>
+    </header>
 
+    <section class="editorial-section">
       <h2>Medios que estoy estudiando</h2>
       <ul>
-        <li><strong>AI coding:</strong> contexto, planificación y validación para colaborar mejor con herramientas de IA.</li>
-        <li><strong>desarrollo de producto:</strong> convertir necesidades reales en experiencias claras y comprobables.</li>
-        <li><strong>knowledge systems:</strong> organizar decisiones y aprendizajes para sostener mejoras futuras.</li>
+        <li><strong>IA aplicada:</strong> contexto, planificación y validación para colaborar mejor con herramientas de IA.</li>
+        <li><strong>Desarrollo de producto:</strong> convertir necesidades reales en experiencias claras y comprobables.</li>
+        <li><strong>Sistemas de conocimiento:</strong> organizar decisiones y aprendizajes para sostener mejoras futuras.</li>
       </ul>
+    </section>
 
-      <p>Última actualización: 24 de julio de 2026.</p>
-    </main>
-  </body>
-</html>
+    <p class="page-updated">Última actualización: 24 de julio de 2026.</p>
+  </article>
+</BaseLayout>

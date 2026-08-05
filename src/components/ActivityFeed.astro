@@ -1,0 +1,42 @@
+---
+import { collectionDetails, contentHref, type PublicEntry } from '../lib/content';
+
+interface Props {
+  entries: PublicEntry[];
+}
+
+const { entries } = Astro.props;
+const dateFormatter = new Intl.DateTimeFormat('es-MX', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric'
+});
+---
+
+<div class="activity-feed">
+  <div class="activity-feed__header">
+    <div>
+      <p class="eyebrow">Actividad pública</p>
+      <h2>Publicaciones recientes</h2>
+    </div>
+    <span class="status-label status-label--active"><span aria-hidden="true"></span>Verificada</span>
+  </div>
+
+  {entries.length > 0 ? (
+    <ol>
+      {entries.map((entry) => (
+        <li>
+          <time datetime={entry.data.publishedAt.toISOString()}>
+            {dateFormatter.format(entry.data.publishedAt)}
+          </time>
+          <div>
+            <span>{collectionDetails[entry.collection].label}</span>
+            <a href={contentHref(entry)}>{entry.data.title}</a>
+          </div>
+        </li>
+      ))}
+    </ol>
+  ) : (
+    <p class="empty-state">Aún no hay actividad pública para mostrar.</p>
+  )}
+</div>

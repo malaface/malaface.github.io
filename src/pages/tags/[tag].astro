@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import ContentCard from '../../components/ContentCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { contentHref, getPublishedEntries, type PublicEntry } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const collections = await Promise.all([
+    getCollection('knowledge'),
+    getCollection('playbooks'),
+    getCollection('blog'),
+    getCollection('lab'),
+    getCollection('resources')
+  ]);
+  const entries = getPublishedEntries(collections.flat() as PublicEntry[]);
+  const tags = [...new Set(entries.flatMap((entry) => entry.data.tags))];
+
+  return tags.map((tag) => ({
+    params: { tag },
+    props: { tag, entries: entries.filter((entry) => entry.data.tags.includes(tag)) }
+  }));
+}
+
+interface Props {
+  tag: string;
+  entries: PublicEntry[];
+}
+
+const { tag, entries } = Astro.props;
+---
+
+<BaseLayout
+  title={`Etiqueta: ${tag}`}
+  description={`Contenido público relacionado con ${tag}, ordenado por fecha de publicación.`}
+>
+  <header class="page-intro page-intro--compact">
+    <p class="eyebrow">Etiqueta pública</p>
+    <h1>{tag}</h1>
+    <p>{entries.length} {entries.length === 1 ? 'pieza publicada' : 'piezas publicadas'} con esta etiqueta.</p>
+  </header>
+
+  <div class="content-grid">
+    {entries.map((entry) => <ContentCard entry={entry} href={contentHref(entry)} />)}
+  </div>
+</BaseLayout>

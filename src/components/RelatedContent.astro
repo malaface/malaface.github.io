@@ -1,0 +1,22 @@
+---
+import ContentCard from './ContentCard.astro';
+import { contentHref, type PublicEntry } from '../lib/content';
+
+interface Props {
+  entries: PublicEntry[];
+}
+
+const { entries } = Astro.props;
+---
+
+{entries.length > 0 && (
+  <section class="related-content" aria-labelledby="related-title">
+    <div class="section-heading">
+      <p class="eyebrow">Siguiente lectura</p>
+      <h2 id="related-title">Contenido relacionado</h2>
+    </div>
+    <div class="content-grid content-grid--three">
+      {entries.map((entry) => <ContentCard entry={entry} href={contentHref(entry)} />)}
+    </div>
+  </section>
+)}

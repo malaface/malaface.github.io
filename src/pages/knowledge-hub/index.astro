@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import ContentCard from '../../components/ContentCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { categoryLabels, contentHref, getPublishedEntries } from '../../lib/content';
+
+const entries = getPublishedEntries(await getCollection('knowledge'));
+const categories = [...new Set(entries.map((entry) => entry.data.category))];
+---
+
+<BaseLayout
+  title="Conocimiento"
+  description="Artículos públicos para convertir necesidades de alcance, seguimiento, claridad y eficiencia en decisiones técnicas comprensibles."
+>
+  <header class="page-intro">
+    <p class="eyebrow">Conocimiento público</p>
+    <h1>Decisiones útiles antes que herramientas</h1>
+    <p>
+      Para profesionales de la salud, negocios familiares y PYMEs de servicios que buscan ampliar su alcance, mejorar
+      el seguimiento de clientes, entender la gestión financiera del negocio y reducir tareas repetitivas.
+    </p>
+    <p class="page-intro__note">
+      Estos artículos explican medios técnicos y criterios reproducibles; no presentan resultados concluidos de clientes.
+    </p>
+  </header>
+
+  {categories.map((category) => (
+    <section class="content-section" aria-labelledby={`category-${category}`}>
+      <div class="section-heading">
+        <p class="eyebrow">Tema publicado</p>
+        <h2 id={`category-${category}`}>{categoryLabels[category]}</h2>
+      </div>
+      <div class="content-grid">
+        {entries
+          .filter((entry) => entry.data.category === category)
+          .map((entry) => <ContentCard entry={entry} href={contentHref(entry)} />)}
+      </div>
+    </section>
+  ))}
+</BaseLayout>

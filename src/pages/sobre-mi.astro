@@ -1,27 +1,22 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="es-MX">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Sobre mí | Luis Miguel Malacara Jiménez</title>
-    <meta
-      name="description"
-      content="Tecnología orientada a ampliar el alcance, mejorar el seguimiento y simplificar la gestión de negocios que ayudan a otros."
-    />
-  </head>
-  <body>
-    <main>
-      <header>
-        <p>Sobre mí</p>
-        <h1>Resultados más claros para negocios que ayudan a otros</h1>
-      </header>
-
+<BaseLayout
+  title="Sobre mí"
+  description="Tecnología orientada a ampliar el alcance, mejorar el seguimiento y simplificar la gestión de negocios que ayudan a otros."
+>
+  <article class="editorial-page">
+    <header class="page-intro page-intro--compact">
+      <p class="eyebrow">Sobre mí</p>
+      <h1>Resultados más claros para negocios que ayudan a otros</h1>
       <p>
         Soy Luis Miguel Malacara Jiménez. Me interesa ayudar a profesionales de la salud, negocios familiares y PYMEs
         de servicios que trabajan con pasión y buscan servir mejor a otras personas.
       </p>
+    </header>
+
+    <div class="prose">
       <p>
         El punto de partida es el resultado que necesitan: llegar a más personas, dar mejor seguimiento a sus clientes,
         entender con mayor claridad la gestión financiera del negocio y reducir tareas repetitivas. La tecnología es
@@ -32,6 +27,6 @@
         mejores preguntas, evaluar opciones y diseñar soluciones comprensibles que puedan evolucionar junto con cada
         negocio.
       </p>
-    </main>
-  </body>
-</html>
+    </div>
+  </article>
+</BaseLayout>

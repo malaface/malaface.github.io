@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import ContentCard from '../../components/ContentCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { categoryLabels, contentHref, getPublishedEntries } from '../../lib/content';
+
+const entries = getPublishedEntries(await getCollection('resources'));
+const categories = [...new Set(entries.map((entry) => entry.data.category))];
+---
+
+<BaseLayout
+  title="Recursos"
+  description="Recursos públicos para aplicar revisiones claras, seguras y repetibles en proyectos de negocio."
+>
+  <header class="page-intro">
+    <p class="eyebrow">Recursos prácticos</p>
+    <h1>Materiales para convertir intención en acción</h1>
+    <p>
+      Listas y herramientas educativas para profesionales y PYMEs de servicios que buscan comunicar mejor, dar
+      seguimiento y reducir omisiones sin exponer información privada.
+    </p>
+  </header>
+
+  {categories.map((category) => (
+    <section class="content-section" aria-labelledby={`category-${category}`}>
+      <div class="section-heading">
+        <p class="eyebrow">Tema publicado</p>
+        <h2 id={`category-${category}`}>{categoryLabels[category]}</h2>
+      </div>
+      <div class="content-grid">
+        {entries
+          .filter((entry) => entry.data.category === category)
+          .map((entry) => <ContentCard entry={entry} href={contentHref(entry)} />)}
+      </div>
+    </section>
+  ))}
+</BaseLayout>
