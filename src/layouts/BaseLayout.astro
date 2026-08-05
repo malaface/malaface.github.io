@@ -15,6 +15,42 @@ const { title, description, image = '/og-default.svg', article = false } = Astro
 const pageTitle = title ? `${title} · ${siteConfig.name}` : siteConfig.name;
 const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url);
 const socialImageUrl = new URL(image, siteConfig.url);
+const personId = new URL('/#person', siteConfig.url).toString();
+const websiteId = new URL('/#website', siteConfig.url).toString();
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': personId,
+      name: siteConfig.name,
+      url: siteConfig.url
+    },
+    {
+      '@type': 'WebSite',
+      '@id': websiteId,
+      name: siteConfig.shortName,
+      url: siteConfig.url,
+      description: siteConfig.description,
+      inLanguage: siteConfig.locale,
+      publisher: { '@id': personId }
+    },
+    ...(article
+      ? [{
+          '@type': 'BlogPosting',
+          headline: title,
+          description,
+          url: canonicalUrl.toString(),
+          image: socialImageUrl.toString(),
+          inLanguage: siteConfig.locale,
+          author: { '@id': personId },
+          isPartOf: { '@id': websiteId },
+          mainEntityOfPage: canonicalUrl.toString()
+        }]
+      : [])
+  ]
+};
+const structuredDataJson = JSON.stringify(structuredData).replaceAll('<', '\\u003c');
 ---
 
 <!doctype html>
@@ -35,6 +71,7 @@ const socialImageUrl = new URL(image, siteConfig.url);
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={socialImageUrl} />
     <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" is:inline set:html={structuredDataJson}></script>
     <script is:inline>
       try {
         const theme = localStorage.getItem('lm-theme');
@@ -45,7 +82,7 @@ const socialImageUrl = new URL(image, siteConfig.url);
   <body>
     <a class="skip-link" href="#content">Saltar al contenido</a>
     <CommandHeader />
-    <main id="content"><slot /></main>
+    <main id="content" data-pagefind-body><slot /></main>
     <Footer />
   </body>
 </html>

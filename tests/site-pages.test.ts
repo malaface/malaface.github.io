@@ -10,7 +10,13 @@ describe('static site routes', () => {
     'knowledge-hub/context-engineering/index.html',
     'tags/ai-coding/index.html',
     'live-projects/index.html',
-    'now/index.html'
+    'now/index.html',
+    'search/index.html',
+    'rss.xml',
+    'sitemap-index.xml',
+    'robots.txt',
+    'pagefind/pagefind.js',
+    'pagefind/pagefind-entry.json'
   ])('builds %s', async (path) => {
     await expect(access(builtPage(path))).resolves.toBeUndefined();
   });
@@ -24,6 +30,55 @@ describe('static site routes', () => {
 
     expect(html).toContain('Publicado el 24 de julio de 2026');
     expect(html).not.toContain('Publicado el 23 de julio de 2026');
+  });
+
+  it('publishes only the allowed editorial collections in RSS', async () => {
+    const rss = await readFile(builtPage('rss.xml'), 'utf8');
+
+    expect(rss).toContain('/blog/documentar-para-reutilizar/');
+    expect(rss).toContain('/knowledge-hub/context-engineering/');
+    expect(rss).toContain('/playbooks/content-review/');
+    expect(rss).not.toContain('/laboratorio/quality-first-web-projects/');
+    expect(rss).not.toContain('/recursos/public-content-checklist/');
+  });
+
+  it('allows public crawling and advertises the canonical sitemap', async () => {
+    const robots = await readFile(builtPage('robots.txt'), 'utf8');
+
+    expect(robots).toBe([
+      'User-agent: *',
+      'Allow: /',
+      'Sitemap: https://malaface.github.io/sitemap-index.xml',
+      ''
+    ].join('\n'));
+  });
+
+  it('emits Person and WebSite structured data, with BlogPosting only for articles', async () => {
+    const homeHtml = await readFile(builtPage('index.html'), 'utf8');
+    const articleHtml = await readFile(builtPage('knowledge-hub/context-engineering/index.html'), 'utf8');
+    const structuredData = (html: string) => {
+      const json = html.match(/<script type="application\/ld\+json">(?<json>[\s\S]*?)<\/script>/)?.groups?.json;
+
+      expect(json).toBeDefined();
+      return JSON.parse(json ?? '{}') as { '@graph'?: Array<{ '@type'?: string }> };
+    };
+
+    const homeTypes = structuredData(homeHtml)['@graph']?.map((entry) => entry['@type']);
+    const articleTypes = structuredData(articleHtml)['@graph']?.map((entry) => entry['@type']);
+
+    expect(homeTypes).toEqual(expect.arrayContaining(['Person', 'WebSite']));
+    expect(homeTypes).not.toContain('BlogPosting');
+    expect(articleTypes).toEqual(expect.arrayContaining(['Person', 'WebSite', 'BlogPosting']));
+  });
+
+  it('ships an accessible local search entry point', async () => {
+    const html = await readFile(builtPage('search/index.html'), 'utf8');
+
+    expect(html).toContain('<dialog');
+    expect(html).toContain('aria-label="Buscar en el sitio"');
+    expect(html).toContain('aria-live="polite"');
+    expect(html).toContain('/pagefind/pagefind.js');
+    expect(html).toContain('<main id="content" data-pagefind-body>');
   });
 
   it('leads the home page with audiences and desired outcomes', async () => {
