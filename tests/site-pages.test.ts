@@ -78,7 +78,7 @@ describe('static site routes', () => {
     expect(html).toContain('aria-label="Buscar en el sitio"');
     expect(html).toContain('aria-live="polite"');
     expect(html).toContain('/pagefind/pagefind.js');
-    expect(html).toContain('<main id="content" data-pagefind-body>');
+    expect(html).toMatch(/<main[^>]*id="content"[^>]*data-pagefind-body>/);
   });
 
   it('leads the home page with audiences and desired outcomes', async () => {

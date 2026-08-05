@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { expectVisibleKeyboardFocus } from './helpers';
 
 test('navigates to the Knowledge Hub with Spanish controls', async ({ page }) => {
   await page.goto('/');
@@ -9,8 +10,7 @@ test('navigates to the Knowledge Hub with Spanish controls', async ({ page }) =>
     if (await knowledgeLink.evaluate((element) => element === document.activeElement)) break;
   }
 
-  await expect(knowledgeLink).toBeFocused();
-  await expect(knowledgeLink).toHaveCSS('outline-style', 'solid');
+  await expectVisibleKeyboardFocus(knowledgeLink);
   await page.keyboard.press('Enter');
   await expect(page).toHaveURL(/\/knowledge-hub\/$/);
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();

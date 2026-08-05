@@ -1,4 +1,5 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
+import { expectVisibleKeyboardFocus } from './helpers';
 
 const auditedPages = [
   { name: 'Inicio', path: '/' },
@@ -11,18 +12,6 @@ async function tabTo(page: Page, target: Locator) {
     await page.keyboard.press('Tab');
     if (await target.evaluate((element) => element === document.activeElement)) return;
   }
-}
-
-async function expectVisibleKeyboardFocus(target: Locator) {
-  await expect(target).toBeFocused();
-  const outline = await target.evaluate((element) => {
-    const style = getComputedStyle(element);
-    return { color: style.outlineColor, style: style.outlineStyle, width: Number.parseFloat(style.outlineWidth) };
-  });
-
-  expect(outline.style).toBe('solid');
-  expect(outline.width).toBeGreaterThan(0);
-  expect(outline.color).not.toBe('rgba(0, 0, 0, 0)');
 }
 
 test.describe('mobile accessibility baseline', () => {
@@ -52,13 +41,16 @@ test.describe('mobile accessibility baseline', () => {
     await page.goto('/');
 
     const skipLink = page.getByRole('link', { name: 'Saltar al contenido', exact: true });
+    const main = page.locator('#content');
+    await expect(main).toHaveCount(1);
     await page.keyboard.press('Tab');
     await expectVisibleKeyboardFocus(skipLink);
     await expect(skipLink).toBeInViewport();
     await expect(skipLink).toHaveAttribute('href', '#content');
 
-    await page.keyboard.press('Enter');
+    await skipLink.click();
     await expect(page).toHaveURL(/\/#content$/);
+    await expect(main).toBeFocused();
   });
 
   test('the theme button has a Spanish label and works from the keyboard', async ({ page }) => {

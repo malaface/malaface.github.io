@@ -82,7 +82,7 @@ const structuredDataJson = JSON.stringify(structuredData).replaceAll('<', '\\u00
   <body>
     <a class="skip-link" href="#content">Saltar al contenido</a>
     <CommandHeader />
-    <main id="content" data-pagefind-body><slot /></main>
+    <main id="content" tabindex="-1" data-pagefind-body><slot /></main>
     <Footer />
   </body>
 </html>
