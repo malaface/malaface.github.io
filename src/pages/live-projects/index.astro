@@ -1,0 +1,43 @@
+---
+import ProjectCard from '../../components/ProjectCard.astro';
+import projectAllowlist from '../../data/project-allowlist.json';
+import projectData from '../../data/live-projects.json';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getVisibleProjects, type ProjectRecord } from '../../lib/projects';
+
+const enabledRepositories = new Set(
+  projectAllowlist.filter(({ enabled }) => enabled === true).map(({ repository }) => repository)
+);
+const projects = getVisibleProjects(
+  projectData.map((project) => ({ ...project, enabled: enabledRepositories.has(project.repository) })) as Array<
+    ProjectRecord & { enabled: boolean }
+  >
+);
+---
+
+<BaseLayout
+  title="Proyectos"
+  description="Proyectos públicos seleccionados explícitamente, con enlaces de producción solo cuando están confirmados."
+>
+  <header class="page-intro">
+    <p class="eyebrow">Selección explícita</p>
+    <h1>Proyectos públicos con enlaces confirmados</h1>
+    <p>
+      Esta lista incluye únicamente repositorios elegidos para publicación. La etiqueta de producción verificada aparece
+      solo cuando existe un enlace público confirmado.
+    </p>
+  </header>
+
+  <section class="content-section" aria-labelledby="selected-projects-title">
+    <div class="section-heading section-heading--wide">
+      <div>
+        <p class="eyebrow">Trabajo público seleccionado</p>
+        <h2 id="selected-projects-title">Proyectos disponibles</h2>
+      </div>
+      <p>Los repositorios candidatos permanecen fuera del sitio hasta que se habilitan de forma explícita.</p>
+    </div>
+    <div class="project-grid">
+      {projects.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </section>
+</BaseLayout>

@@ -2,8 +2,12 @@
 import { getCollection } from 'astro:content';
 import ActivityFeed from '../components/ActivityFeed.astro';
 import ContentCard from '../components/ContentCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import projectAllowlist from '../data/project-allowlist.json';
+import projectData from '../data/live-projects.json';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { contentHref, getPublishedEntries, type PublicEntry } from '../lib/content';
+import { getVisibleProjects, type ProjectRecord } from '../lib/projects';
 import { siteConfig } from '../config/site';
 
 const collections = await Promise.all([
@@ -16,6 +20,16 @@ const collections = await Promise.all([
 const entries = getPublishedEntries(collections.flat() as PublicEntry[]);
 const featuredEntries = entries.filter((entry) => entry.data.featured).slice(0, 4);
 const recentEntries = entries.slice(0, 4);
+const enabledRepositories = new Set(
+  projectAllowlist.filter(({ enabled }) => enabled === true).map(({ repository }) => repository)
+);
+const featuredProjects = getVisibleProjects(
+  projectData.map((project) => ({ ...project, enabled: enabledRepositories.has(project.repository) })) as Array<
+    ProjectRecord & { enabled: boolean }
+  >
+)
+  .filter(({ featured }) => featured)
+  .slice(0, 1);
 
 const outcomes = [
   { number: '01', title: 'Mayor alcance', description: 'Comunicar mejor el valor del trabajo para llegar a más personas.' },
@@ -108,22 +122,15 @@ const capabilities = [
   </section>
 
   <section class="home-section" aria-labelledby="public-work-title">
-    <div class="section-heading">
-      <p class="eyebrow">Trabajo público seleccionado</p>
-      <h2 id="public-work-title">Proyectos y actividad comprobable</h2>
+    <div class="section-heading section-heading--wide">
+      <div>
+        <p class="eyebrow">Trabajo público seleccionado</p>
+        <h2 id="public-work-title">Proyectos y actividad comprobable</h2>
+      </div>
+      <a class="text-link" href="/live-projects/">Ver todos los proyectos <span aria-hidden="true">→</span></a>
     </div>
     <div class="public-work-grid">
-      <article class="project-placeholder">
-        <div>
-          <p class="eyebrow">Proyectos seleccionados</p>
-          <h2>Selección pública en preparación</h2>
-          <p>
-            Este espacio mostrará únicamente productos y repositorios elegidos de forma explícita, con enlaces de
-            producción sólo cuando estén confirmados.
-          </p>
-        </div>
-        <a class="text-link" href={siteConfig.github} rel="me">Ver perfil público <span aria-hidden="true">↗</span></a>
-      </article>
+      {featuredProjects.map((project) => <ProjectCard project={project} />)}
       <ActivityFeed entries={recentEntries} />
     </div>
   </section>

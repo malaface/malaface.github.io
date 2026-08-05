@@ -1,17 +1,7 @@
 ---
 import TagList from './TagList.astro';
-
-export interface ProjectRecord {
-  repository: string;
-  name: string;
-  description: string;
-  technologies: string[];
-  githubUrl: string;
-  productionUrl?: string;
-  status: string;
-  updatedAt: string;
-  featured: boolean;
-}
+import { formatPublicDate } from '../lib/content';
+import type { ProjectRecord } from '../lib/projects';
 
 interface Props {
   project: ProjectRecord;
@@ -19,10 +9,7 @@ interface Props {
 
 const { project } = Astro.props;
 const isVerified = Boolean(project.productionUrl);
-const updatedAt = new Date(project.updatedAt).toLocaleDateString('es-MX', {
-  month: 'short',
-  year: 'numeric'
-});
+const updatedAt = formatPublicDate(new Date(project.updatedAt));
 ---
 
 <article class="project-card">

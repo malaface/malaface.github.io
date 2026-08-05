@@ -9,6 +9,7 @@ describe('static site routes', () => {
     'knowledge-hub/index.html',
     'knowledge-hub/context-engineering/index.html',
     'tags/ai-coding/index.html',
+    'live-projects/index.html',
     'now/index.html'
   ])('builds %s', async (path) => {
     await expect(access(builtPage(path))).resolves.toBeUndefined();
@@ -38,5 +39,16 @@ describe('static site routes', () => {
     expect(html).toContain('gestión financiera');
     expect(html).toContain('tareas repetitivas');
     expect(html).toContain('no resultados concluidos');
+  });
+
+  it('renders only explicitly selected live projects and links to them from home', async () => {
+    const homeHtml = await readFile(builtPage('index.html'), 'utf8');
+    const projectsHtml = await readFile(builtPage('live-projects/index.html'), 'utf8');
+
+    expect(homeHtml).toContain('href="/live-projects/"');
+    expect(projectsHtml).toContain('https://github.com/malaface/malaface.github.io');
+    expect(projectsHtml).toContain('https://github.com/malaface/t-ethos');
+    expect(projectsHtml).not.toContain('https://github.com/malaface/web-template');
+    expect(projectsHtml).not.toContain('https://github.com/malaface/webHermana');
   });
 });

@@ -1,0 +1,24 @@
+[
+  {
+    "repository": "malaface/malaface.github.io",
+    "name": "malaface.github.io",
+    "description": "Proyecto público seleccionado.",
+    "technologies": [],
+    "githubUrl": "https://github.com/malaface/malaface.github.io",
+    "productionUrl": "https://malaface.github.io",
+    "status": "production",
+    "updatedAt": "2026-07-24T00:00:00.000Z",
+    "featured": true
+  },
+  {
+    "repository": "malaface/t-ethos",
+    "name": "t-ethos",
+    "description": "Proyecto público seleccionado.",
+    "technologies": [],
+    "githubUrl": "https://github.com/malaface/t-ethos",
+    "productionUrl": "https://t-ethos.vercel.app",
+    "status": "production",
+    "updatedAt": "2026-07-24T00:00:00.000Z",
+    "featured": true
+  }
+]

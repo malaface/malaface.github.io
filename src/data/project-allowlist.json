@@ -1,0 +1,24 @@
+[
+  {
+    "repository": "malaface/malaface.github.io",
+    "enabled": true,
+    "featured": true,
+    "manualProductionUrl": "https://malaface.github.io"
+  },
+  {
+    "repository": "malaface/t-ethos",
+    "enabled": true,
+    "featured": true,
+    "manualProductionUrl": "https://t-ethos.vercel.app"
+  },
+  {
+    "repository": "malaface/web-template",
+    "enabled": false,
+    "featured": false
+  },
+  {
+    "repository": "malaface/webHermana",
+    "enabled": false,
+    "featured": false
+  }
+]
