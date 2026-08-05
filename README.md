@@ -10,6 +10,10 @@ pnpm check
 pnpm build
 ```
 
+Cada pull request y cada push ejecutan la validación de contenido público, las pruebas, las comprobaciones
+de Astro, la compilación y las pruebas E2E. Los pushes a `main` vuelven a validar y publicar únicamente
+el directorio estático `dist/` en GitHub Pages.
+
 ## Verificación en navegador
 
 Instala Chromium una vez en cada entorno nuevo y genera el sitio antes de ejecutar las comprobaciones:
