@@ -14,7 +14,9 @@ describe('public editorial content', () => {
     expect(entries.length).toBeGreaterThanOrEqual(6);
 
     for (const [filePath, source] of entries) {
-      expect(source, filePath).toMatch(/^---[\s\S]*?\ndraft: false\n---/);
+      const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/)?.[1];
+
+      expect(frontmatter, filePath).toMatch(/^draft: false$/m);
       expect(assertPublicContent(source, filePath)).toEqual([]);
     }
   });
