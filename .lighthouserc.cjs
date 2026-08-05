@@ -10,7 +10,14 @@ module.exports = {
         'http://localhost/knowledge-hub/',
         'http://localhost/live-projects/'
       ],
-      numberOfRuns: 1
+      numberOfRuns: 1,
+      ...(process.env.CI
+        ? {
+            settings: {
+              chromeFlags: '--no-sandbox'
+            }
+          }
+        : {})
     },
     assert: {
       assertions: {
