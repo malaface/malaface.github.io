@@ -1,5 +1,15 @@
 ### Hi there 👋
 
+## Desarrollo
+
+```bash
+pnpm install
+pnpm dev
+pnpm test
+pnpm check
+pnpm build
+```
+
 <!--
 **malaface/malaface** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
