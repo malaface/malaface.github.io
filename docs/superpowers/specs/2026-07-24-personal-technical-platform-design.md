@@ -15,8 +15,7 @@ El diseño se apoya exclusivamente en fuentes revisadas durante el descubrimient
 - `malaface.github.io` tiene una página HTML mínima y GitHub Pages activo, sin framework ni Actions.
 - Los repositorios locales muestran trabajo en Next.js, TypeScript, Tailwind, Supabase, RLS, pruebas unitarias/E2E/accesibilidad, Kotlin/libGDX y documentación de producto.
 - El vault usa Markdown curado con frontmatter OKF, wikilinks, índices y timestamps. Los temas publicables detectados son knowledge systems, AI coding/context engineering, automatización, seguridad de aplicaciones, desarrollo de producto y documentación.
-- El inventario público de GitHub contiene 19 repositorios visibles; los forks, repositorios de curso y proyectos no seleccionados no formarán parte del escaparate por defecto.
-- La única URL de Vercel confirmada durante el descubrimiento es `https://t-ethos.vercel.app`; la CLI de Vercel no tiene credenciales en este entorno.
+- Ninguna página pública de proyecto ha sido proporcionada y aprobada todavía; Live Projects permanece vacío hasta recibir una URL explícita del propietario.
 - La dirección de marca proporcionada por el propietario define tres audiencias: profesionales de la salud, negocios familiares y PYMEs de servicios; y cuatro resultados: alcance, seguimiento de clientes, claridad financiera empresarial y automatización de tareas repetitivas.
 
 No se infiere experiencia adicional a partir de estas fuentes.
@@ -30,7 +29,7 @@ Estas reglas son invariantes de producto y se validan en CI:
 3. El sitio solo puede decir que Obsidian se usa como sistema personal de conocimiento y explicar aplicaciones generales de ese método. No muestra contenido, enlaces, nombres de notas, grafo, rutas, metadatos ni datos del vault.
 4. Se prohíben NOC, Data Center, infraestructura operativa, servidores, topologías, runbooks privados, incidentes, credenciales, IPs, sistemas internos, datos identificables de clientes, datos financieros privados o personales, números de cuenta, registros financieros sensibles, diario personal y datos personales sensibles. La gestión financiera genérica de un negocio o una PYME sí es contenido público permitido.
 5. El importador de contenido no existe por diseño. Un validador local/CI revisa el contenido que ya vive en el repositorio y rechaza patrones, categorías y rutas bloqueados.
-6. GitHub y Vercel solo suministran metadatos públicos o credenciales explícitamente configuradas por el usuario; nunca se publican secretos ni URLs de preview.
+6. Live Projects es un catálogo manual sin descubrimiento ni conectores externos. Solo acepta páginas públicas cuya URL haya sido proporcionada y aprobada explícitamente por el propietario.
 
 ## Decisión tecnológica
 
@@ -38,7 +37,7 @@ Se utilizará **Astro** con salida estática (`output: 'static'`).
 
 Astro es la opción elegida porque entrega HTML estático adecuado para GitHub Pages, tiene colecciones de contenido tipadas, soporta Markdown/MDX, sitemap, RSS y SEO sin un servidor de aplicación, y permite mantener JavaScript mínimo. Las islas se limitan a la búsqueda y al selector de tema.
 
-No se elegirá Next.js export estático porque su complejidad no aporta valor en un sitio editorial sin backend. Hugo tampoco se elegirá porque TypeScript facilita los validadores y los conectores de GitHub/Vercel ya necesarios.
+No se elegirá Next.js export estático porque su complejidad no aporta valor en un sitio editorial sin backend. Hugo tampoco se elegirá porque TypeScript facilita los validadores y el catálogo manual tipado.
 
 ## Dirección visual
 
@@ -63,8 +62,8 @@ Elementos visuales:
 | `/knowledge-hub/[slug]/` | Artículo con breadcrumbs, tags, tiempo de lectura y relacionados | Markdown/MDX público |
 | `/playbooks/` | Biblioteca de guías públicas de automatización, desarrollo y productividad | Colección `playbooks` |
 | `/blog/` | Artículos de reflexión y aprendizaje | Colección `blog` |
-| `/laboratorio/` | Scripts, experimentos y herramientas seleccionadas | Colección `lab` y GitHub seleccionado |
-| `/live-projects/` | Proyectos desplegados confirmados y seleccionados | Archivo generado y configuración editorial |
+| `/laboratorio/` | Scripts, experimentos y herramientas seleccionadas | Colección `lab` |
+| `/live-projects/` | Páginas públicas de proyectos aprobadas manualmente | `src/data/live-projects.json` |
 | `/recursos/` | Snippets, plantillas y herramientas aprobadas | Colección `resources` |
 | `/now/` | Qué se aprende, construye e investiga, redactado para publicación | Archivo manual público |
 | `/contacto/` | Canales que el usuario configure explícitamente | Configuración del sitio |
@@ -88,7 +87,6 @@ category: knowledge-systems
 tags: [ai-coding, context-engineering, metodologia]
 featured: true
 draft: false
-githubRepo: https://github.com/malaface/example
 ```
 
 `section`, `category` y `tags` se validan contra una lista explícita de valores permitidos. Las categorías iniciales son `automation`, `knowledge-systems`, `ai-coding`, `application-security`, `product-building` y `developer-experience`, porque son las únicas sustentadas por evidencia actual. Las categorías sin contenido no se renderizan.
@@ -100,21 +98,16 @@ Los wikilinks no se importan desde Obsidian. Si un artículo público necesita e
 ```text
 Markdown/MDX público en este repositorio ──┐
 Configuración editorial pública ───────────┼──> validación ──> Astro build ──> GitHub Pages
-GitHub API (metadatos seleccionados) ──────┤
-Vercel API opcional (solo producción) ─────┘
+Catálogo manual de páginas aprobadas ──────┘
 ```
 
 ### Contenido
 
 El autor crea contenido público dentro de este repositorio. No existe conexión con el vault. Una guía de contribución explica cómo resumir una idea de forma segura sin copiar notas privadas.
 
-### GitHub
+### Live Projects
 
-Un script de sincronización consulta el API de GitHub para los repositorios configurados en una lista explícita. Registra nombre, descripción, lenguajes, URL, release, fecha de actualización y actividad reciente. Los nuevos repositorios quedan como candidatos en el artefacto de CI; no se publican hasta agregarlos a la lista editorial.
-
-### Vercel
-
-El conector es opcional y se activa solo con `VERCEL_TOKEN` y, si aplica, `VERCEL_TEAM_ID`. Consulta proyectos y deployments de producción para repositorios seleccionados. Nunca ingiere previews. Sin credenciales, conserva los proyectos manualmente confirmados y muestra que la verificación automática está pendiente.
+`src/data/live-projects.json` se edita manualmente y contiene únicamente páginas públicas aprobadas. Cada registro usa `id`, `name`, `description`, `technologies`, `productionUrl`, `status`, `updatedAt` y `featured`. No almacena enlaces de código ni identificadores de repositorios. Si el propietario no ha proporcionado URLs, el archivo es `[]` y tanto la ruta como Inicio muestran un estado vacío honesto.
 
 ## Componentes y comportamiento
 
@@ -124,11 +117,11 @@ El conector es opcional y se activa solo con `VERCEL_TOKEN` y, si aplica, `VERCE
 - `ContentCard`, `ProjectCard`, `TagList`: tarjetas consistentes y accesibles.
 - `TableOfContents`: generado de encabezados de artículo.
 - `RelatedContent`: puntuación por tag/categoría, sin recomendar borradores.
-- `ActivityFeed`: datos generados de repositorios seleccionados y publicaciones públicas.
+- `ActivityFeed`: publicaciones públicas recientes de las colecciones editoriales.
 - `Search`: Pagefind estático, sin servicio externo ni rastreo del visitante.
 - `ThemeToggle`: preferencia del sistema con selector manual persistente.
 
-Los fallos de los conectores no bloquean la publicación: el script conserva el último archivo generado válido y emite una advertencia clara. Los fallos de validación de privacidad sí bloquean build y deploy.
+Los fallos de validación de privacidad bloquean build y deploy. Live Projects no depende de red ni de servicios externos durante el build.
 
 ## SEO, distribución y rendimiento
 
@@ -142,7 +135,7 @@ Los fallos de los conectores no bloquean la publicación: el script conserva el 
 
 El workflow de pull request ejecuta: validación de frontmatter y privacidad, pruebas unitarias, `astro check`, build, comprobación de enlaces y Lighthouse.
 
-El workflow de `main` repite las validaciones, actualiza metadatos de GitHub/Vercel si hay secretos configurados y publica el directorio estático mediante GitHub Pages. La publicación usa permisos mínimos de Pages e `id-token`; los secretos nunca aparecen en artefactos ni logs.
+El workflow de `main` repite las validaciones y publica el directorio estático mediante GitHub Pages. No ejecuta enriquecimiento externo de proyectos. La publicación usa permisos mínimos de Pages e `id-token`.
 
 ## Criterios de aceptación
 
@@ -153,9 +146,9 @@ El workflow de `main` repite las validaciones, actualiza metadatos de GitHub/Ver
 5. Las rutas del sitemap funcionan en móvil y escritorio, con navegación por teclado.
 6. Knowledge Hub, Playbooks, Blog, Lab y Recursos se alimentan solo de Markdown/MDX público tipado.
 7. Búsqueda, RSS, sitemap, tags, tabla de contenidos, relacionados y metadatos sociales se generan correctamente.
-8. Live Projects solo lista proyectos seleccionados y deployments de producción confirmados; nunca previews.
+8. Live Projects solo lista páginas públicas proporcionadas y aprobadas manualmente; sin URLs aprobadas muestra un estado vacío y no inventa proyectos.
 9. CI bloquea contenido prohibido y publica únicamente después de todas las verificaciones.
 
 ## Alcance posterior
 
-La primera entrega incluye la plataforma, sus colecciones, dos o más piezas de contenido público redactadas desde cero, automatización de metadatos, CI/CD y documentación de mantenimiento. Capturas automáticas de proyectos se incorporan después de que los deployments de producción estén verificados y se decida una fuente estable de imágenes. Analítica se mantiene desactivada hasta que el usuario elija un proveedor y su política de privacidad.
+La primera entrega incluye la plataforma, sus colecciones, dos o más piezas de contenido público redactadas desde cero, CI/CD y documentación de mantenimiento. Las páginas de proyectos se incorporan únicamente cuando el propietario proporcione y apruebe sus URLs públicas. Analítica se mantiene desactivada hasta que el usuario elija un proveedor y su política de privacidad.

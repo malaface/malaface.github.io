@@ -41,14 +41,17 @@ describe('static site routes', () => {
     expect(html).toContain('no resultados concluidos');
   });
 
-  it('renders only explicitly selected live projects and links to them from home', async () => {
+  it('shows an honest empty project state while keeping public article activity', async () => {
     const homeHtml = await readFile(builtPage('index.html'), 'utf8');
     const projectsHtml = await readFile(builtPage('live-projects/index.html'), 'utf8');
 
     expect(homeHtml).toContain('href="/live-projects/"');
-    expect(projectsHtml).toContain('https://github.com/malaface/malaface.github.io');
-    expect(projectsHtml).toContain('https://github.com/malaface/t-ethos');
-    expect(projectsHtml).not.toContain('https://github.com/malaface/web-template');
-    expect(projectsHtml).not.toContain('https://github.com/malaface/webHermana');
+    expect(homeHtml).toContain('Aún no hay páginas de proyectos aprobadas para mostrar.');
+    expect(projectsHtml).toContain('Aún no hay páginas de proyectos aprobadas para mostrar.');
+    expect(homeHtml).toContain('Publicaciones recientes');
+    expect(homeHtml).not.toContain('t-ethos');
+    expect(projectsHtml).not.toContain('t-ethos');
+    expect(homeHtml).not.toContain('github.com/malaface/');
+    expect(projectsHtml).not.toContain('github.com/malaface/');
   });
 });

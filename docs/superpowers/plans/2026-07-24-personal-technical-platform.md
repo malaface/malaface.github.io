@@ -4,9 +4,9 @@
 
 **Goal:** Build and deploy an Astro-based public platform that helps health professionals, family businesses and service SMEs pursue greater reach, better client follow-up, clearer business financial management and automation of repetitive tasks, without any access to the Obsidian vault or references to NOC/Data Center work.
 
-**Architecture:** Astro statically compiles Markdown/MDX content stored only in this repository. Typed content collections, a privacy validator, selected GitHub/Vercel metadata generators, and a Command Center editorial UI produce a GitHub Pages artifact. External connectors are optional and only enrich explicitly selected public projects.
+**Architecture:** Astro statically compiles Markdown/MDX content stored only in this repository. Typed content collections, a privacy validator, a manual catalog of approved public project pages, and a Command Center editorial UI produce a GitHub Pages artifact. Live Projects has no external connector or automatic discovery.
 
-**Tech Stack:** Astro static output, TypeScript, MDX, Pagefind, Vitest, Playwright, Lighthouse CI, GitHub Actions, GitHub Pages API, optional GitHub/Vercel REST APIs.
+**Tech Stack:** Astro static output, TypeScript, MDX, Pagefind, Vitest, Playwright, Lighthouse CI, GitHub Actions and GitHub Pages.
 
 ## Global Constraints
 
@@ -17,10 +17,10 @@
 - Present automation, product development, AI coding and knowledge systems as means to those outcomes; do not claim completed client outcomes without evidence.
 - Reject NOC, Data Center, infrastructure, servers, operational runbooks, incidents, credentials, IP addresses, internal systems, identifiable client data, private or personal financial data, account numbers, sensitive financial records, personal diary information and sensitive data in public content. Generic business financial management is allowed.
 - Public content is created only in `src/content/`; every entry requires typed frontmatter and `draft: false` before build output.
-- GitHub/Vercel data is opt-in through the project allowlist; forks, previews and unselected repositories are not displayed.
+- Live Projects reads only manually approved page records from `src/data/live-projects.json`; no URL is added until the owner supplies and approves it.
 - Use Spanish for site copy and accessibility labels.
 - Maintain keyboard access, visible focus states, semantic headings and WCAG AA contrast.
-- Do not publish previews, deployment secrets, tokens or externally supplied HTML.
+- Do not publish unapproved project URLs or externally supplied HTML.
 - Keep external analytics disabled.
 
 ---
@@ -32,12 +32,12 @@
 ├── .github/workflows/{ci.yml,deploy.yml}
 ├── docs/{maintenance.md,superpowers/...}
 ├── public/{favicon.svg,og-default.svg,robots.txt}
-├── scripts/{generate-github-data.mjs,generate-vercel-data.mjs,validate-public-content.mjs}
+├── scripts/validate-public-content.mjs
 ├── src/
 │   ├── components/{ActivityFeed,CommandHeader,ContentCard,Footer,ProjectCard,RelatedContent,SearchDialog,TableOfContents,TagList,ThemeToggle}.astro
 │   ├── config/{content-policy.ts,site.ts}
 │   ├── content/{blog,knowledge,lab,playbooks,resources}/
-│   ├── data/{activity.json,live-projects.json,project-allowlist.json}
+│   ├── data/live-projects.json
 │   ├── layouts/{BaseLayout,ContentLayout}.astro
 │   ├── lib/{content.ts,projects.ts,seo.ts}
 │   ├── pages/{index,sobre-mi,knowledge-hub,playbooks,blog,laboratorio,live-projects,recursos,now,contacto,search,tags/[tag]}.astro
@@ -119,8 +119,6 @@ Create `package.json`:
     "test": "vitest run",
     "test:e2e": "playwright test",
     "validate:public": "node scripts/validate-public-content.mjs",
-    "data:github": "node scripts/generate-github-data.mjs",
-    "data:vercel": "node scripts/generate-vercel-data.mjs",
     "build": "pnpm validate:public && astro check && astro build && pagefind --site dist",
     "preview": "astro preview"
   },
@@ -338,7 +336,7 @@ export function assertPublicContent(source, filePath) {
 
 Create `src/config/content-policy.ts` as `export { assertPublicContent } from './public-content-policy.mjs';` and declare the shared API in `src/config/public-content-policy.d.mts`. Do not block generic `finanzas`, `financial` or `gestión financiera`. Block personal-finance categories and the sensitive labels bank balance, CLABE and account number as complete word-aware phrases regardless of delimiter or value formatting. Ordinary years and unlabeled business metrics remain allowed.
 
-Create `src/content.config.ts` with one shared Zod schema requiring `title`, `description`, `publishedAt`, `section`, `category`, `tags`, `featured` and `draft`; allow optional `updatedAt`, `githubRepo` and `externalUrl`. Define allowed categories exactly as `automation`, `knowledge-systems`, `ai-coding`, `application-security`, `product-building` and `developer-experience`.
+Create `src/content.config.ts` with one shared Zod schema requiring `title`, `description`, `publishedAt`, `section`, `category`, `tags`, `featured` and `draft`; allow optional `updatedAt` and `externalUrl`. Define allowed categories exactly as `automation`, `knowledge-systems`, `ai-coding`, `application-security`, `product-building` and `developer-experience`.
 
 Create `src/lib/content.ts`:
 
@@ -613,144 +611,68 @@ git commit -m "feat: add knowledge hub and editorial routes"
 
 ---
 
-### Task 6: Add selected project data and safe GitHub activity generation
+### Task 6: Add the manual Live Projects page catalog
 
 **Files:**
-- Create: `src/data/project-allowlist.json`
 - Create: `src/data/live-projects.json`
-- Create: `src/data/activity.json`
 - Create: `src/lib/projects.ts`
-- Create: `scripts/generate-github-data.mjs`
 - Create: `tests/project-data.test.ts`
 - Create: `src/pages/live-projects/index.astro`
+- Modify: `src/components/ProjectCard.astro`
 - Modify: `src/pages/index.astro`
 
 **Interfaces:**
-- `ProjectRecord` has `repository`, `name`, `description`, `technologies`, `githubUrl`, `productionUrl?`, `status`, `updatedAt`, `featured`.
-- `generate-github-data.mjs` processes only `project-allowlist.json` records with `enabled: true`.
+- `ProjectRecord` has exactly `id`, `name`, `description`, `technologies`, `productionUrl`, `status`, `updatedAt`, `featured`.
+- `src/data/live-projects.json` is the manual approval boundary. It contains only page URLs explicitly supplied and approved by the owner.
 
-- [ ] **Step 1: Write failing project-selection tests**
+- [ ] **Step 1: Write failing manual-catalog tests**
 
-Create `tests/project-data.test.ts` that loads `project-allowlist.json`, verifies every enabled record has a non-empty repository and GitHub URL, and asserts that a record with `enabled: false` is absent from `getVisibleProjects`.
+Create `tests/project-data.test.ts` that asserts the exact manual record contract, verifies the initial data is `[]`, verifies sorting by `featured` then `updatedAt`, and proves no project discovery scripts or data commands exist.
 
-- [ ] **Step 2: Run test to verify failure**
+Extend `tests/site-pages.test.ts` to assert both Inicio and `/live-projects/` show `Aún no hay páginas de proyectos aprobadas para mostrar.` while the public-article activity feed remains visible.
 
-Run: `pnpm test tests/project-data.test.ts`
-
-Expected: failure because data and helpers are absent.
-
-- [ ] **Step 3: Define explicit, evidence-based selected projects**
-
-Create `src/data/project-allowlist.json` with these starting records:
-
-```json
-[
-  { "repository": "malaface/malaface.github.io", "enabled": true, "featured": true, "manualProductionUrl": "https://malaface.github.io" },
-  { "repository": "malaface/t-ethos", "enabled": true, "featured": true, "manualProductionUrl": "https://t-ethos.vercel.app" },
-  { "repository": "malaface/web-template", "enabled": false, "featured": false },
-  { "repository": "malaface/webHermana", "enabled": false, "featured": false }
-]
-```
-
-The disabled records are candidates only and must not render. Do not add forks, course repos, private details or unverified URLs.
-
-Implement `src/lib/projects.ts` with `getVisibleProjects(projects)` that returns enabled records sorted by `featured` then `updatedAt` descending.
-
-Implement `generate-github-data.mjs` using the built-in `fetch` API. Read `GITHUB_TOKEN` only when present, set an `Accept: application/vnd.github+json` header, fetch `/repos/{repository}` and `/repos/{repository}/languages`, and write normalized JSON containing only the allowed record fields. If a fetch fails, retain the existing record and append a safe `activity.json` failure status; never throw away previously generated production URLs.
-
-Implement `/live-projects/` with `ProjectCard` records, a “verificado” label only when `productionUrl` exists, and no preview URL support.
-
-- [ ] **Step 4: Verify selection and output**
+- [ ] **Step 2: Run tests to verify failure**
 
 Run:
 
 ```bash
 pnpm test tests/project-data.test.ts
-GITHUB_TOKEN='' pnpm data:github
+pnpm test tests/site-pages.test.ts -t "honest empty project state"
+```
+
+Expected: failure while old project records and connector artifacts remain.
+
+- [ ] **Step 3: Implement the manual empty catalog**
+
+Set `src/data/live-projects.json` to `[]`. Implement `ProjectRecord` with only the eight fields above and keep `getVisibleProjects` as a deterministic manual-record sort. `ProjectCard` links only to `productionUrl`.
+
+Implement honest Spanish empty states on Inicio and `/live-projects/`. Do not invent a page, deployment, repository URL or technology record. Continue showing `ActivityFeed` from public editorial entries on Inicio.
+
+- [ ] **Step 4: Verify manual output**
+
+Run:
+
+```bash
+pnpm test tests/project-data.test.ts tests/site-pages.test.ts
+pnpm validate:public
+pnpm check
 pnpm build
 ```
 
-Expected: tests pass, static manual records remain usable without a token, and `/live-projects/` builds.
+Expected: all checks pass; `/live-projects/` builds with the empty state and no project link.
 
-- [ ] **Step 5: Commit project integration**
+- [ ] **Step 5: Commit the manual catalog**
 
 ```bash
-git add src/data src/lib/projects.ts scripts/generate-github-data.mjs tests/project-data.test.ts src/pages/live-projects src/pages/index.astro
-git commit -m "feat: add selected GitHub projects"
+git add src/data/live-projects.json src/lib/projects.ts src/components/ProjectCard.astro tests/project-data.test.ts tests/site-pages.test.ts src/pages/live-projects src/pages/index.astro package.json src/content.config.ts docs
+git commit -m "fix: make live projects a manual page catalog"
 ```
 
 ---
 
-### Task 7: Add optional Vercel production enrichment
+### Task 7: Superseded — external project enrichment removed
 
-**Files:**
-- Create: `scripts/generate-vercel-data.mjs`
-- Modify: `src/data/live-projects.json`
-- Modify: `src/lib/projects.ts`
-- Modify: `tests/project-data.test.ts`
-- Modify: `.env.example`
-- Modify: `README.md`
-
-**Interfaces:**
-- Optional env: `VERCEL_TOKEN`, `VERCEL_TEAM_ID`.
-- The script accepts only deployments where `target === 'production'`.
-
-- [ ] **Step 1: Add a failing production-only test**
-
-Add to `tests/project-data.test.ts`:
-
-```ts
-it('keeps a production deployment and removes preview deployments', () => {
-  expect(selectProductionDeployments([preview, production])).toEqual([production]);
-});
-```
-
-- [ ] **Step 2: Verify failure**
-
-Run: `pnpm test tests/project-data.test.ts`
-
-Expected: failure because `selectProductionDeployments` does not exist.
-
-- [ ] **Step 3: Implement production-only Vercel connector**
-
-Implement and export `selectProductionDeployments` in `src/lib/projects.ts`:
-
-```ts
-export function selectProductionDeployments<T extends { target?: string }>(deployments: T[]) {
-  return deployments.filter((deployment) => deployment.target === 'production');
-}
-```
-
-Implement `scripts/generate-vercel-data.mjs` to exit `0` with `Vercel no configurado; se conservan datos manuales.` when `VERCEL_TOKEN` is absent. When it exists, call `https://api.vercel.com/v6/deployments?limit=100` with Bearer auth and optional `teamId`, filter with `selectProductionDeployments`, match only enabled project records by repository name, and update `productionUrl`, `status: 'production'` and `updatedAt`. Do not write a `url` whose deployment target is missing or equals `preview`.
-
-Create `.env.example`:
-
-```dotenv
-# Optional: enrich explicitly selected production projects.
-GITHUB_TOKEN=
-VERCEL_TOKEN=
-VERCEL_TEAM_ID=
-```
-
-Document that these values are local or GitHub Action secrets and are never committed.
-
-- [ ] **Step 4: Run test and no-token behavior**
-
-Run:
-
-```bash
-pnpm test tests/project-data.test.ts
-VERCEL_TOKEN='' pnpm data:vercel
-```
-
-Expected: tests pass; the command exits 0 and does not alter manual production records.
-
-- [ ] **Step 5: Commit Vercel enrichment**
-
-```bash
-git add scripts/generate-vercel-data.mjs src/lib/projects.ts src/data/live-projects.json tests/project-data.test.ts .env.example README.md
-git commit -m "feat: add production-only Vercel enrichment"
-```
+This task is intentionally removed. Live Projects has no API integration, automatic discovery, repository metadata, environment configuration or enrichment step. Future work must preserve the manual page-only boundary unless the owner approves a new design explicitly.
 
 ---
 
@@ -880,7 +802,7 @@ git commit -m "test: add accessibility and lighthouse checks"
 
 - [ ] **Step 1: Write workflow contract checks**
 
-Create `tests/workflow-contract.test.ts` that reads the two YAML files as text and asserts both invoke `pnpm validate:public`; assert deploy contains `actions/deploy-pages` and does not contain `OBSIDIAN`, `VAULT`, `preview` or `VERCEL_TOKEN` printed with `echo`.
+Create `tests/workflow-contract.test.ts` that reads the two YAML files as text and asserts both invoke `pnpm validate:public`; assert deploy contains `actions/deploy-pages`, publishes only `dist/`, and does not invoke project-data enrichment or checkout another repository.
 
 - [ ] **Step 2: Verify failure**
 
@@ -901,7 +823,7 @@ permissions:
   id-token: write
 ```
 
-Run the public validator and test suite before `actions/configure-pages`, `actions/upload-pages-artifact` with `path: ./dist`, and `actions/deploy-pages`. The workflow may run `pnpm data:github` and `pnpm data:vercel` only when matching secrets exist; the scripts’ no-token behavior must be safe. Never checkout another repository.
+Run the public validator and test suite before `actions/configure-pages`, `actions/upload-pages-artifact` with `path: ./dist`, and `actions/deploy-pages`. Never run project discovery or enrichment and never checkout another repository.
 
 - [ ] **Step 4: Verify contracts and build locally**
 
@@ -933,11 +855,11 @@ git commit -m "ci: validate and deploy GitHub Pages"
 - Create: `tests/documentation-contract.test.ts`
 
 **Interfaces:**
-- Maintenance guide is the single source for publishing content, selecting projects, configuring optional tokens and rollback.
+- Maintenance guide is the single source for publishing content, adding manually approved project pages and rollback.
 
 - [ ] **Step 1: Write failing documentation contract test**
 
-Create `tests/documentation-contract.test.ts` to assert `docs/maintenance.md` contains the exact headings `## Publicar contenido`, `## Seleccionar proyectos`, `## Configurar integraciones opcionales`, `## Privacidad` and `## Rollback`; assert it states that the site does not access the Obsidian vault.
+Create `tests/documentation-contract.test.ts` to assert `docs/maintenance.md` contains the exact headings `## Publicar contenido`, `## Agregar una página de proyecto`, `## Privacidad` and `## Rollback`; assert it states that the site does not access the Obsidian vault.
 
 - [ ] **Step 2: Run test to confirm failure**
 
@@ -949,7 +871,7 @@ Expected: failure because the maintenance guide is absent.
 
 Document the exact content workflow: create Markdown in `src/content`, fill typed frontmatter, run `pnpm validate:public && pnpm test && pnpm build`, open a PR, and publish after CI succeeds. Explicitly state that any idea originally developed in Obsidian must be rewritten manually as a safe public article; the site has no vault access.
 
-Document selection of an enabled project, manual production URL confirmation, optional GitHub/Vercel secret configuration, secret revocation, and rollback by reverting a deployment commit. Include a checklist that forbids NOC, Data Center, infrastructure and sensitive data.
+Document that a project page is added only after the owner supplies and approves its public URL, then add one complete `ProjectRecord` manually to `src/data/live-projects.json`. State that the catalog performs no discovery and contains no links to source-code repositories. Document rollback by reverting a deployment commit. Include a checklist that forbids NOC, Data Center, infrastructure and sensitive data.
 
 - [ ] **Step 4: Verify documentation and full project commands**
 

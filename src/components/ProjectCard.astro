@@ -8,15 +8,14 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const isVerified = Boolean(project.productionUrl);
 const updatedAt = formatPublicDate(new Date(project.updatedAt));
 ---
 
 <article class="project-card">
   <div class="project-card__meta">
-    <span class:list={['status-label', { 'status-label--active': isVerified }]}>
+    <span class="status-label status-label--active">
       <span aria-hidden="true"></span>
-      {isVerified ? 'Producción verificada' : 'Proyecto seleccionado'}
+      Página verificada
     </span>
     <time datetime={project.updatedAt}>Actualizado {updatedAt}</time>
   </div>
@@ -24,13 +23,8 @@ const updatedAt = formatPublicDate(new Date(project.updatedAt));
   <p>{project.description}</p>
   <TagList tags={project.technologies} linked={false} label="Tecnologías" />
   <div class="project-card__actions">
-    {project.productionUrl && (
-      <a class="button-link" href={project.productionUrl} rel="noreferrer">
-        Abrir producto <span aria-hidden="true">↗</span>
-      </a>
-    )}
-    <a class="text-link" href={project.githubUrl} rel="noreferrer">
-      Ver código <span aria-hidden="true">↗</span>
+    <a class="button-link" href={project.productionUrl} rel="noreferrer">
+      Abrir página <span aria-hidden="true">↗</span>
     </a>
   </div>
 </article>

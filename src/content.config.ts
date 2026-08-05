@@ -20,7 +20,6 @@ const sharedSchema = z.object({
   tags: z.array(z.string()),
   featured: z.boolean(),
   draft: z.boolean(),
-  githubRepo: z.string().url().optional(),
   externalUrl: z.string().url().optional()
 });
 

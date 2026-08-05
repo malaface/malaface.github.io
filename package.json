@@ -8,8 +8,6 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "validate:public": "node scripts/validate-public-content.mjs",
-    "data:github": "node scripts/generate-github-data.mjs",
-    "data:vercel": "node scripts/generate-vercel-data.mjs",
     "build": "pnpm validate:public && astro check && astro build && pagefind --site dist",
     "preview": "astro preview"
   },
