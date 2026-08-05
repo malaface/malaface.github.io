@@ -1,4 +1,4 @@
-import { access, readFile, readdir } from 'node:fs/promises';
+import { readFile, readdir, stat } from 'node:fs/promises';
 import { extname, relative, resolve } from 'node:path';
 
 const siteDirectory = resolve(process.argv[2] ?? 'dist');
@@ -14,10 +14,9 @@ async function filesIn(directory) {
   return files.flat();
 }
 
-async function exists(path) {
+async function isFile(path) {
   try {
-    await access(path);
-    return true;
+    return (await stat(path)).isFile();
   } catch {
     return false;
   }
@@ -42,7 +41,7 @@ async function targetFile(pathname) {
       : [directPath, resolve(directPath, 'index.html'), `${directPath}.html`];
 
   for (const candidate of candidates) {
-    if (await exists(candidate)) return candidate;
+    if (await isFile(candidate)) return candidate;
   }
   return undefined;
 }

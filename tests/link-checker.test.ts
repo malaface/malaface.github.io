@@ -36,4 +36,13 @@ describe('built internal link checker', () => {
       stderr: expect.stringContaining('/missing/')
     });
   });
+
+  it('rejects a directory that has no publishable index page', async () => {
+    const directory = await siteFixture('/empty-directory');
+    await mkdir(join(directory, 'empty-directory'));
+
+    await expect(run(process.execPath, [checker.pathname, directory])).rejects.toMatchObject({
+      stderr: expect.stringContaining('/empty-directory')
+    });
+  });
 });
