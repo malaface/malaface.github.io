@@ -23,7 +23,7 @@ test.describe('mobile accessibility baseline', () => {
 
       const main = page.getByRole('main');
       await expect(main).toContainText(/\S/);
-      await expect(main.locator('h1')).toHaveCount(1);
+      await expect(page.locator('h1')).toHaveCount(1);
       await expect(main.locator('h1')).toBeVisible();
     });
 
@@ -64,5 +64,21 @@ test.describe('mobile accessibility baseline', () => {
     await page.keyboard.press('Enter');
     await expect(themeButton).toHaveAccessibleName('Cambiar a tema oscuro');
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  });
+
+  test('the theme button keeps its accessible state when storage is unavailable', async ({ page }) => {
+    await page.addInitScript(() => {
+      Storage.prototype.setItem = () => {
+        throw new DOMException('Storage disabled', 'SecurityError');
+      };
+    });
+    await page.goto('/');
+
+    const themeButton = page.locator('.theme-toggle');
+    await themeButton.click();
+
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+    await expect(themeButton).toHaveAccessibleName('Cambiar a tema oscuro');
+    await expect(themeButton).toHaveAttribute('aria-pressed', 'true');
   });
 });

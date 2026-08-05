@@ -58,15 +58,23 @@
   const input = dialog?.querySelector<HTMLInputElement>('[data-search-input]');
   const status = dialog?.querySelector<HTMLElement>('[data-search-status]');
   const results = dialog?.querySelector<HTMLOListElement>('[data-search-results]');
+  const importPagefind = new Function('modulePath', 'return import(modulePath)') as (
+    modulePath: string
+  ) => Promise<PagefindModule>;
   let pagefindPromise: Promise<PagefindModule> | undefined;
 
   const loadPagefind = () => {
     if (!dialog) return Promise.reject(new Error('No se encontró el diálogo de búsqueda.'));
 
-    pagefindPromise ??= import(/* @vite-ignore */ dialog.dataset.pagefindModule ?? '/pagefind/pagefind.js')
+    const pagefindModule = dialog.dataset.pagefindModule ?? '/pagefind/pagefind.js';
+    pagefindPromise ??= importPagefind(pagefindModule)
       .then(async (pagefind: PagefindModule) => {
         await pagefind.init();
         return pagefind;
+      })
+      .catch((error: unknown) => {
+        pagefindPromise = undefined;
+        throw error;
       });
 
     return pagefindPromise;
@@ -230,16 +238,16 @@
     list-style: none;
   }
 
-  .search-dialog__results li {
+  .search-dialog__results :global(li) {
     padding-block: var(--space-3);
     border-top: 1px solid var(--color-border);
   }
 
-  .search-dialog__results a {
+  .search-dialog__results :global(a) {
     font-weight: 720;
   }
 
-  .search-dialog__results p {
+  .search-dialog__results :global(p) {
     margin-block: var(--space-1) 0;
     color: var(--color-muted);
   }

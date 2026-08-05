@@ -1,5 +1,6 @@
 import { access, readFile } from 'node:fs/promises';
 import { describe, expect, it } from 'vitest';
+import { siteConfig } from '../src/config/site';
 
 const builtPage = (path: string) => new URL(`../dist/${path}`, import.meta.url);
 
@@ -106,7 +107,7 @@ describe('static site routes', () => {
     expect(homeHtml).toContain('Publicaciones recientes');
     expect(homeHtml).not.toContain('t-ethos');
     expect(projectsHtml).not.toContain('t-ethos');
-    expect(homeHtml).not.toContain('github.com/malaface/');
-    expect(projectsHtml).not.toContain('github.com/malaface/');
+    expect(homeHtml).not.toContain(siteConfig.github);
+    expect(projectsHtml).not.toContain(siteConfig.github);
   });
 });

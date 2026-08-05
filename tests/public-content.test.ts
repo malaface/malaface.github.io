@@ -6,6 +6,15 @@ const contentEntries = import.meta.glob<string>('../src/content/**/*.{md,mdx}', 
   import: 'default',
   query: '?raw'
 });
+const editorialPages = import.meta.glob<string>([
+  '../src/pages/contacto.astro',
+  '../src/pages/now.astro',
+  '../src/pages/sobre-mi.astro'
+], {
+  eager: true,
+  import: 'default',
+  query: '?raw'
+});
 
 describe('public editorial content', () => {
   it('publishes at least six policy-safe entries with an explicit draft flag', () => {
@@ -17,6 +26,14 @@ describe('public editorial content', () => {
       const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/)?.[1];
 
       expect(frontmatter, filePath).toMatch(/^draft: false$/m);
+      expect(assertPublicContent(source, filePath)).toEqual([]);
+    }
+  });
+
+  it('keeps every editorial Astro page within the public-content policy', () => {
+    expect(Object.keys(editorialPages)).toHaveLength(3);
+
+    for (const [filePath, source] of Object.entries(editorialPages)) {
       expect(assertPublicContent(source, filePath)).toEqual([]);
     }
   });

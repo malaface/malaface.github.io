@@ -3,6 +3,11 @@ import { resolve } from 'node:path';
 import { assertPublicContent } from '../src/config/public-content-policy.mjs';
 
 const contentDirectory = resolve('src/content');
+const editorialPages = [
+  resolve('src/pages/contacto.astro'),
+  resolve('src/pages/now.astro'),
+  resolve('src/pages/sobre-mi.astro')
+];
 
 async function contentFiles(directory) {
   try {
@@ -20,7 +25,7 @@ async function contentFiles(directory) {
 }
 
 const violations = [];
-for (const filePath of await contentFiles(contentDirectory)) {
+for (const filePath of [...await contentFiles(contentDirectory), ...editorialPages]) {
   violations.push(...assertPublicContent(await readFile(filePath, 'utf8'), filePath));
 }
 
