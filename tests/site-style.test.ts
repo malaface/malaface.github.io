@@ -54,8 +54,10 @@ describe('site design system', () => {
       'Inicio',
       'Conocimiento',
       'Guías',
+      'Blog',
       'Laboratorio',
       'Proyectos',
+      'Recursos',
       'Ahora'
     ]);
   });

@@ -20,6 +20,10 @@ describe('static site routes', () => {
     'index.html',
     'knowledge-hub/index.html',
     'knowledge-hub/context-engineering/index.html',
+    'playbooks/index.html',
+    'blog/index.html',
+    'laboratorio/index.html',
+    'recursos/index.html',
     'tags/ai-coding/index.html',
     'live-projects/index.html',
     'now/index.html',
@@ -31,6 +35,23 @@ describe('static site routes', () => {
     'pagefind/pagefind-entry.json'
   ])('builds %s', async (path) => {
     await expect(access(builtPage(path))).resolves.toBeUndefined();
+  });
+
+  it('links every public collection from the secondary navigation', async () => {
+    const html = await readFile(builtPage('index.html'), 'utf8');
+    const footer = html.match(/<footer class="site-footer">(?<footer>[\s\S]*?)<\/footer>/)?.groups?.footer ?? '';
+
+    for (const href of [
+      '/knowledge-hub/',
+      '/playbooks/',
+      '/blog/',
+      '/laboratorio/',
+      '/live-projects/',
+      '/recursos/',
+      '/now/'
+    ]) {
+      expect(footer).toContain(`href="${href}"`);
+    }
   });
 
   it('does not generate a route for an unknown tag', async () => {
@@ -108,16 +129,30 @@ describe('static site routes', () => {
     expect(html).toContain('no resultados concluidos');
   });
 
-  it('shows an honest empty project state while keeping public article activity', async () => {
+  it('distributes home calls to action across projects, resources, blog, contact and guides', async () => {
+    const html = await readFile(builtPage('index.html'), 'utf8');
+
+    expect(html).toContain('href="/live-projects/">Ver proyectos');
+    expect(html).toContain('href="/recursos/">Explorar recursos');
+    expect(html).toContain('href="/blog/">Ir al Blog');
+    expect(html).toContain('href="/contacto/">Contactar');
+    expect(html).toContain('href="/playbooks/">Abrir Guías');
+    expect(html).not.toContain('>Explorar conocimiento');
+    expect(html).not.toContain('>Ir a Conocimiento');
+  });
+
+  it('shows Nexus HVAC on Inicio and both approved pages on Proyectos', async () => {
     const homeHtml = await readFile(builtPage('index.html'), 'utf8');
     const projectsHtml = await readFile(builtPage('live-projects/index.html'), 'utf8');
 
-    expect(homeHtml).toContain('href="/live-projects/"');
-    expect(homeHtml).toContain('Aún no hay páginas de proyectos aprobadas para mostrar.');
-    expect(projectsHtml).toContain('Aún no hay páginas de proyectos aprobadas para mostrar.');
+    expect(homeHtml).toContain('Nexus HVAC');
+    expect(homeHtml).toContain('https://nexus-hvac.malacaran8n.uk/');
+    expect(homeHtml).not.toContain('https://t-ethos.malacaran8n.uk/');
+    expect(projectsHtml).toContain('Nexus HVAC');
+    expect(projectsHtml).toContain('https://nexus-hvac.malacaran8n.uk/');
+    expect(projectsHtml).toContain('T-Ethos');
+    expect(projectsHtml).toContain('https://t-ethos.malacaran8n.uk/');
     expect(homeHtml).toContain('Publicaciones recientes');
-    expect(homeHtml).not.toContain('t-ethos');
-    expect(projectsHtml).not.toContain('t-ethos');
     expect(homeHtml).not.toContain(siteConfig.github);
     expect(projectsHtml).not.toContain(siteConfig.github);
   });

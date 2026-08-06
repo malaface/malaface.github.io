@@ -39,10 +39,32 @@ describe('manual Live Projects catalog', () => {
     expectTypeOf<ProjectRecord>().toEqualTypeOf<ManualPageRecord>();
   });
 
-  it('starts empty until the user supplies an approved public page URL', async () => {
+  it('contains exactly the two manually approved public pages', async () => {
     const projects = parseProjectRecords(JSON.parse(await readFile(dataFile('live-projects.json'), 'utf8')));
 
-    expect(projects).toEqual([]);
+    expect(projects).toEqual([
+      {
+        id: 'nexus-hvac',
+        name: 'Nexus HVAC',
+        description: 'Servicios de instalación, reparación y mantenimiento de sistemas de aire acondicionado y refrigeración para hogares y negocios en Guadalajara.',
+        technologies: ['Next.js'],
+        productionUrl: 'https://nexus-hvac.malacaran8n.uk/',
+        status: 'production',
+        updatedAt: '2026-08-05T00:00:00.000Z',
+        featured: true
+      },
+      {
+        id: 't-ethos',
+        name: 'T-Ethos',
+        description: 'Presencia digital para profesionales y artesanos mediante automatizaciones, asistentes de IA, páginas web y consultoría personalizada.',
+        technologies: ['Next.js'],
+        productionUrl: 'https://t-ethos.malacaran8n.uk/',
+        status: 'production',
+        updatedAt: '2026-08-05T00:00:00.000Z',
+        featured: false
+      }
+    ]);
+    expect(getHomeProject(projects)?.id).toBe('nexus-hvac');
   });
 
   it('sorts manually approved pages by featured state and update date', () => {

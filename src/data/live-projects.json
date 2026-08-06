@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "id": "nexus-hvac",
+    "name": "Nexus HVAC",
+    "description": "Servicios de instalación, reparación y mantenimiento de sistemas de aire acondicionado y refrigeración para hogares y negocios en Guadalajara.",
+    "technologies": ["Next.js"],
+    "productionUrl": "https://nexus-hvac.malacaran8n.uk/",
+    "status": "production",
+    "updatedAt": "2026-08-05T00:00:00.000Z",
+    "featured": true
+  },
+  {
+    "id": "t-ethos",
+    "name": "T-Ethos",
+    "description": "Presencia digital para profesionales y artesanos mediante automatizaciones, asistentes de IA, páginas web y consultoría personalizada.",
+    "technologies": ["Next.js"],
+    "productionUrl": "https://t-ethos.malacaran8n.uk/",
+    "status": "production",
+    "updatedAt": "2026-08-05T00:00:00.000Z",
+    "featured": false
+  }
+]
