@@ -17,9 +17,9 @@ Un proceso repetitivo puede quitar tiempo a la atención, al seguimiento comerci
 
 ## Qué problema resuelve
 
-n8n encaja en procesos que empiezan con un evento, reúnen datos, aplican reglas y producen una acción o aviso. Por ejemplo: un cambio de estado puede generar una tarea; una fecha próxima puede pedir información faltante; una respuesta puede actualizar el siguiente paso.
+n8n encaja en procesos que parten de un evento, reúnen datos, aplican reglas y producen una acción o aviso. Esa secuencia debe estar definida antes de automatizarla.
 
-Su foco es el recorrido completo entre sistemas. Flowise, Open WebUI y Pydantic pueden ser decisiones más adecuadas cuando el centro del trabajo sea, respectivamente, diseñar una interacción con modelos, ofrecer una interfaz de uso de modelos o definir y validar datos dentro de una aplicación. Ninguna de esas decisiones sustituye la necesidad de describir el proceso que conecta personas y aplicaciones.
+Su foco es el recorrido completo entre sistemas. [Flowise](https://docs.flowiseai.com/) se documenta como una plataforma para crear agentes y flujos con modelos de lenguaje; [Open WebUI](https://docs.openwebui.com/) como una plataforma con una interfaz para trabajar con modelos; y [Pydantic](https://pydantic.dev/docs/validation/latest/get-started/) como una biblioteca de validación de datos para Python. Pueden ser decisiones más adecuadas, respectivamente, cuando el centro del trabajo sea diseñar agentes o flujos con modelos, dar al equipo una interfaz para usar modelos o validar datos dentro de una aplicación. Ninguna sustituye la necesidad de describir el proceso que conecta personas y aplicaciones.
 
 Conectar aplicaciones no repara un proceso indefinido. Si nadie puede explicar qué inicia el flujo, qué regla decide el siguiente paso o qué ocurre ante una excepción, la automatización sólo hará más rápida esa ambigüedad.
 
