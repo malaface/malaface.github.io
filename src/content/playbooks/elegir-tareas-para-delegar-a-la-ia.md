@@ -1,7 +1,7 @@
 ---
 title: Qué tareas conviene delegar a la IA
 description: Una matriz práctica para priorizar actividades repetitivas según su frecuencia, criticidad y facilidad de revisión.
-publishedAt: 2026-07-24
+publishedAt: 2026-08-11
 section: playbooks
 category: automation
 tags: [automatizacion, metodologia, toma-de-decisiones]
