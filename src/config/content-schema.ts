@@ -29,7 +29,14 @@ export const contentTags = [
   'pruebas-web',
   'desarrollo-de-producto',
   'checklist',
-  'publicacion'
+  'publicacion',
+  'n8n',
+  'flowise',
+  'open-webui',
+  'pydantic',
+  'modelos-de-ia',
+  'validacion-de-datos',
+  'toma-de-decisiones'
 ] as const;
 
 export const contentSchemaFor = (section: ContentSection) => z.object({
