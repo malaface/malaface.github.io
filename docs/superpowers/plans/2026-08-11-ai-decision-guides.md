@@ -136,7 +136,7 @@
 ### Task 8: Record the private session closeout after delivery
 
 **Files:**
-- Modify only with explicit authorization: `/Users/luismiguelmalacarajimenez/Documents/Obsidian/main/proyectos/malaface.github.io/malaface.github.io.md`
+- Modify only with explicit authorization: nota hub privada del proyecto en Obsidian.
 
 - [ ] Ask for authorization before editing the existing project hub in the private vault.
 - [ ] If authorized, append a concise session link and note containing branch, public PR URL, decisions, commits, checks, CI state, and pending merge/deployment. Do not copy private context to the repository or PR.
