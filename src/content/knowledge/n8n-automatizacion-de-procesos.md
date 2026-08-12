@@ -33,7 +33,7 @@ Conviene considerar n8n cuando se cumplen estas condiciones:
 - Una persona responsable puede atender los casos que no cumplen la regla.
 - El equipo necesita consultar qué ejecuciones terminaron, cuáles fallaron y qué necesita seguimiento.
 
-La página de [ejecuciones](https://docs.n8n.io/workflows/executions/all-executions/) documenta una vista para revisar ejecuciones a las que se tiene acceso, filtrarlas por flujo, estado o inicio, y volver a intentar una ejecución fallida. Esa revisión debe formar parte del diseño, no añadirse cuando aparezca el primer problema.
+La página de [ejecuciones](https://docs.n8n.io/build/understand-workflows/understand-executions/view-all-executions) documenta una vista para revisar ejecuciones a las que se tiene acceso, filtrarlas por flujo, estado o inicio, y volver a intentar una ejecución fallida. Esa revisión debe formar parte del diseño, no añadirse cuando aparezca el primer problema.
 
 ## Cuándo elegir otra opción
 
@@ -58,6 +58,11 @@ Una clínica o negocio de servicios define que, cuando una solicitud cambia a �
 ### Ejemplo 2: Seguimiento de documentación pendiente
 
 Un negocio familiar recibe documentos para iniciar un servicio. Cada día, el flujo revisa los casos abiertos, identifica los que aún tienen un documento pendiente y prepara un aviso para la persona responsable. Cuando el expediente está completo, actualiza su estado y evita enviar un recordatorio duplicado. El responsable conserva la decisión sobre los casos que requieren una llamada o una aclaración.
+
+## Para seguir decidiendo
+
+- [Qué tareas conviene delegar a la IA](/playbooks/elegir-tareas-para-delegar-a-la-ia/)
+- [Por qué validar los datos con Pydantic antes de automatizar](/knowledge-hub/pydantic-validacion-de-datos-en-automatizaciones/)
 
 ## Conclusión
 

@@ -66,6 +66,11 @@ Una pyme de servicios define dos asistentes para tareas internas de redacción: 
 
 Un equipo prepara materiales de comunicación y necesita contrastar cómo responden dos modelos ante la misma instrucción. Usa la función de comparación para revisarlos en paralelo, con criterios escritos sobre claridad, precisión y necesidad de corrección humana. La comparación informa una decisión sobre qué modelo aprobar para ese trabajo; no sustituye la revisión del resultado antes de publicarlo.
 
+## Para seguir decidiendo
+
+- [Cuándo construir un flujo visual de IA con Flowise](/knowledge-hub/flowise-flujos-visuales-de-ia/)
+- [Cómo elegir entre ChatGPT, Claude y Gemini y su forma de pago](/knowledge-hub/chatgpt-claude-gemini-comparativa/)
+
 ## Conclusión
 
 Open WebUI es apropiado cuando la necesidad central es dar al equipo una interfaz común para acceder a modelos, conocimiento y asistentes previamente definidos. No reemplaza al modelo, no valida por sí solo las fuentes y no convierte una automatización en un proceso seguro. Su conveniencia depende de que el equipo pueda gobernar cada capa y sostener las responsabilidades que asume.

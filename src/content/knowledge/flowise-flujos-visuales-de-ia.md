@@ -59,6 +59,11 @@ Un negocio de servicios reúne sus políticas públicas y procedimientos aprobad
 
 Una clínica recibe solicitudes iniciales y necesita ordenarlas para su atención administrativa, sin dar orientación clínica. El flujo identifica la categoría definida por el equipo, solicita información faltante y envía a revisión humana las solicitudes que no encajan en una categoría o requieren una decisión. Las pruebas incluyen solicitudes completas, incompletas y ambiguas para comprobar que la regla de escalamiento se cumpla.
 
+## Para seguir decidiendo
+
+- [Cuándo automatizar un proceso de principio a fin con n8n](/knowledge-hub/n8n-automatizacion-de-procesos/)
+- [Cuándo conviene una interfaz propia con Open WebUI](/knowledge-hub/open-webui-interfaz-para-modelos-de-ia/)
+
 ## Conclusión
 
 Flowise es una opción útil cuando la solución necesita hacer explícita la relación entre modelo, fuentes, herramientas y revisión humana. Su valor no está en acumular nodos, sino en convertir ese recorrido en algo que el equipo pueda entender, probar y ajustar con responsabilidad.

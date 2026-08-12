@@ -94,6 +94,11 @@ Una profesional de la salud prepara comunicación administrativa y analiza mater
 
 Una pyme de servicios recibe solicitudes mediante un formulario y necesita asignar una categoría antes de enviarlas a revisión. El proceso se repite, debe devolver una estructura definida y requiere medir volumen, errores y consumo. El equipo evalúa las API de OpenAI, Anthropic y Google con solicitudes ficticias y criterios escritos, elige el nivel que mantiene calidad suficiente al volumen previsto y coloca validación antes del siguiente paso. Las entradas ambiguas se detienen para revisión humana y la automatización sólo procesa campos previamente autorizados.
 
+## Para seguir decidiendo
+
+- [Qué tareas conviene delegar a la IA](/playbooks/elegir-tareas-para-delegar-a-la-ia/)
+- [Cuándo conviene una interfaz propia con Open WebUI](/knowledge-hub/open-webui-interfaz-para-modelos-de-ia/)
+
 ## Conclusión
 
 ChatGPT, Claude y Gemini son productos de acceso; GPT, Claude y Gemini también nombran familias de modelos; y sus API son superficies programáticas con condiciones de cobro propias. Separar esas capas permite comparar lo que realmente necesita el trabajo. La mejor elección no es una marca permanente, sino una combinación verificable de tarea, nivel de modelo, acceso, costo y controles.

@@ -56,6 +56,11 @@ Una herramienta puede reunir tareas cerradas, pendientes y bloqueos a partir de 
 
 Este uso ahorra tiempo de preparación sin convertir la IA en quien decide prioridades. Si el resumen alimenta una decisión importante, se conserva la fuente original y se revisan los puntos críticos antes de compartirlo.
 
+## Para seguir decidiendo
+
+- [Cuándo automatizar un proceso de principio a fin con n8n](/knowledge-hub/n8n-automatizacion-de-procesos/)
+- [Cómo elegir entre ChatGPT, Claude y Gemini y su forma de pago](/knowledge-hub/chatgpt-claude-gemini-comparativa/)
+
 ## Conclusión
 
 La mejor delegación empieza con tareas frecuentes, de bajo impacto y fáciles de revisar. A medida que aumenta la criticidad, también deben aumentar los controles y la participación humana. El objetivo no es automatizar todo, sino reservar el tiempo de las personas para el criterio, la relación y las decisiones que no conviene delegar.

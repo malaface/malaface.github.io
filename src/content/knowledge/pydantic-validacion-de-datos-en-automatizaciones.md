@@ -60,6 +60,11 @@ Un consultorio recibe solicitudes administrativas desde un formulario. Antes de 
 
 Una pyme de servicios reúne datos para preparar una propuesta interna. Antes de enviar el registro al siguiente paso, la aplicación revisa que el nombre de la empresa, el servicio solicitado, la persona de contacto y la fecha estén presentes, que los importes se expresen como números y que el estado pertenezca a una lista aprobada. Si una entrada falla, se devuelve al equipo con una explicación del campo a corregir. La aceptación de la estructura no confirma que el importe, el alcance del servicio o la decisión comercial sean correctos: esas decisiones siguen bajo revisión responsable.
 
+## Para seguir decidiendo
+
+- [Qué tareas conviene delegar a la IA](/playbooks/elegir-tareas-para-delegar-a-la-ia/)
+- [Cuándo automatizar un proceso de principio a fin con n8n](/knowledge-hub/n8n-automatizacion-de-procesos/)
+
 ## Conclusión
 
 Pydantic ayuda a convertir un acuerdo sobre datos mínimos en una comprobación repetible dentro de una solución Python. Es valioso antes de automatizar acciones que dependen de campos completos, tipos coherentes y valores permitidos. Su alcance es estructural: puede señalar una entrada que no cumple las reglas, pero no probar su verdad ni reemplazar el criterio clínico o empresarial.
