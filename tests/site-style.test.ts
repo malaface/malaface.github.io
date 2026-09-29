@@ -58,7 +58,8 @@ describe('site design system', () => {
       'Laboratorio',
       'Proyectos',
       'Recursos',
-      'Ahora'
+      'Ahora',
+      'Sobre mí'
     ]);
   });
 });

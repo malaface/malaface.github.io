@@ -25,7 +25,8 @@ const destinations = [
   ['Laboratorio', '/laboratorio/'],
   ['Proyectos', '/live-projects/'],
   ['Recursos', '/recursos/'],
-  ['Ahora', '/now/']
+  ['Ahora', '/now/'],
+  ['Sobre mí', '/sobre-mi/']
 ] as const;
 
 for (const viewport of [
