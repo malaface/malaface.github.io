@@ -1,6 +1,6 @@
 # Mantenimiento del sitio
 
-Esta es la fuente única de operación para publicar contenido, curar el catálogo de proyectos y revertir una publicación. El sitio es una marca personal orientada a ayudar a profesionales de salud, negocios familiares y PYMEs de servicios; no es un currículum.
+Esta es la fuente única de operación para publicar contenido, curar el catálogo de proyectos y revertir una publicación. El sitio es una marca personal orientada a ayudar a profesionales de salud, negocios familiares y PYMEs de servicios. El perfil profesional se limita a la página Sobre mí; el resto del sitio no es un currículum.
 
 ## Publicar contenido
 

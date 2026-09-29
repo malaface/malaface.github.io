@@ -771,6 +771,23 @@ p {
   max-width: var(--reading-width);
 }
 
+.editorial-page + .content-section {
+  margin-top: var(--space-7);
+}
+
+.skill-groups {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--color-border);
+  gap: var(--space-5);
+  padding-top: var(--space-4);
+}
+
+.skill-groups h3 {
+  margin: 0 0 var(--space-3);
+  font-size: 1rem;
+}
+
 .editorial-section,
 .prose {
   color: var(--color-muted);
@@ -1026,6 +1043,10 @@ p {
 
   .capability-list li {
     gap: var(--space-2);
+  }
+
+  .skill-groups {
+    grid-template-columns: 1fr;
   }
 }
 

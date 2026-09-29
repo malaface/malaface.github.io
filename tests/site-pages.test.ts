@@ -141,7 +141,7 @@ describe('static site routes', () => {
     expect(html).not.toContain('>Ir a Conocimiento');
   });
 
-  it('shows Nexus HVAC on Inicio and both approved pages on Proyectos', async () => {
+  it('shows Nexus HVAC on Inicio and every approved page on Proyectos', async () => {
     const homeHtml = await readFile(builtPage('index.html'), 'utf8');
     const projectsHtml = await readFile(builtPage('live-projects/index.html'), 'utf8');
 
@@ -152,9 +152,25 @@ describe('static site routes', () => {
     expect(projectsHtml).toContain('https://nexus-hvac.malacaran8n.uk/');
     expect(projectsHtml).toContain('T-Ethos');
     expect(projectsHtml).toContain('https://t-ethos.malacaran8n.uk/');
+    expect(projectsHtml).toContain('Fractura Superada');
+    expect(projectsHtml).toContain('https://fractura-superada.malacaran8n.uk/');
+    expect(homeHtml).not.toContain('https://fractura-superada.malacaran8n.uk/');
     expect(homeHtml).toContain('Publicaciones recientes');
     expect(homeHtml).not.toContain(siteConfig.github);
     expect(projectsHtml).not.toContain(siteConfig.github);
+  });
+
+  it('presents the professional profile on Sobre mí', async () => {
+    const html = await readFile(builtPage('sobre-mi/index.html'), 'utf8');
+
+    expect(html).toContain('Ingeniería Electromecánica');
+    expect(html).toContain('Áreas de conocimiento');
+    expect(html).toContain('Refrigeración y aire acondicionado');
+    expect(html).toContain('Dibujo técnico con AutoCAD');
+    expect(html).toContain('Automatización de procesos');
+    expect(html).toContain('Lenguajes, frameworks y software');
+    expect(html).toContain('Fortalezas y habilidades');
+    expect(html).toContain('href="/live-projects/"');
   });
 
   it('keeps the configured GitHub profile exclusive to Contacto', async () => {
