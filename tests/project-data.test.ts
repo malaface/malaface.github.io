@@ -39,7 +39,7 @@ describe('manual Live Projects catalog', () => {
     expectTypeOf<ProjectRecord>().toEqualTypeOf<ManualPageRecord>();
   });
 
-  it('contains exactly the two manually approved public pages', async () => {
+  it('contains exactly the three manually approved public pages', async () => {
     const projects = parseProjectRecords(JSON.parse(await readFile(dataFile('live-projects.json'), 'utf8')));
 
     expect(projects).toEqual([
@@ -56,11 +56,21 @@ describe('manual Live Projects catalog', () => {
       {
         id: 't-ethos',
         name: 'T-Ethos',
-        description: 'Presencia digital para profesionales y artesanos mediante automatizaciones, asistentes de IA, páginas web y consultoría personalizada.',
+        description: 'Automatizaciones, asistentes de IA, páginas web y consultoría para profesionales de la salud con consultorio propio, PyMEs de servicios y empresas familiares.',
         technologies: ['Next.js'],
         productionUrl: 'https://t-ethos.malacaran8n.uk/',
         status: 'production',
         updatedAt: '2026-08-05T00:00:00.000Z',
+        featured: false
+      },
+      {
+        id: 'fractura-superada',
+        name: 'Fractura Superada',
+        description: 'Blog personal sobre la recuperación de una fractura expuesta de tibia y peroné: tratamientos, rehabilitación, trámites del IMSS, nutrición y salud mental, contados desde la experiencia propia y contrastados con fuentes oficiales.',
+        technologies: ['Next.js', 'MDX'],
+        productionUrl: 'https://fractura-superada.malacaran8n.uk/',
+        status: 'production',
+        updatedAt: '2026-09-28T00:00:00.000Z',
         featured: false
       }
     ]);

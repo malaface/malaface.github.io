@@ -1,6 +1,6 @@
 # Contribuir
 
-Este repositorio mantiene una marca personal para ayudar a profesionales de salud, negocios familiares y PYMEs de servicios. No es un currículum ni un canal para publicar detalles operativos, datos sensibles o proyectos no aprobados.
+Este repositorio mantiene una marca personal para ayudar a profesionales de salud, negocios familiares y PYMEs de servicios. El perfil profesional se limita a `/sobre-mi/`; el resto del sitio no es un currículum ni un canal para publicar detalles operativos, datos sensibles o proyectos no aprobados.
 
 Antes de proponer cambios, sigue la guía operativa en [docs/maintenance.md](docs/maintenance.md). Define el contenido público desde cero o reescribe manualmente las ideas; el sitio no tiene acceso a la bóveda de Obsidian.
 

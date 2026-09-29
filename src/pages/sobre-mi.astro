@@ -1,10 +1,71 @@
 ---
+import TagList from '../components/TagList.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const areas = [
+  [
+    'Refrigeración y aire acondicionado',
+    'Cálculo de carga térmica para espacios climatizados y cámaras frías, selección de capacidad de equipos, dimensionamiento de ductos, pérdidas por fricción, selección de rejillas y planeación de mantenimiento preventivo.'
+  ],
+  [
+    'Dibujo técnico con AutoCAD',
+    'Planos de instalación y planos de sembrado de equipos a partir de la planta arquitectónica, como parte de la memoria de cálculo de cada proyecto.'
+  ],
+  [
+    'Automatización de procesos',
+    'Flujos con n8n que captan solicitudes, avisan al equipo y dan seguimiento a clientes, además de asistentes con Flowise y modelos de IA como Claude y GPT para reducir tareas repetitivas.'
+  ],
+  [
+    'Desarrollo web',
+    'Sitios y plataformas con Next.js y Astro: páginas de presentación, CRM, cotizadores, blogs optimizados para buscadores y formularios protegidos contra bots.'
+  ]
+] as const;
+
+const skills = [
+  { title: 'Lenguajes', label: 'Lenguajes de programación', items: ['TypeScript', 'JavaScript', 'Python', 'SQL', 'HTML', 'CSS'] },
+  {
+    title: 'Frameworks y bibliotecas',
+    label: 'Frameworks y bibliotecas',
+    items: ['Next.js', 'React', 'Astro', 'Tailwind CSS', 'Prisma', 'Zod', 'Pydantic', 'MDX']
+  },
+  {
+    title: 'Herramientas y plataformas',
+    label: 'Herramientas y plataformas',
+    items: ['AutoCAD', 'n8n', 'Flowise', 'Claude', 'GPT','PostgreSQL', 'Supabase', 'Vercel', 'Cloudflare', 'Git', 'GitHub Actions', 'Playwright', 'Vitest']
+  }
+] as const;
+
+const strengths = [
+  [
+    'Del oficio a la pantalla',
+    'Entiendo cómo trabaja un negocio de servicios técnicos en campo, y eso me permite convertir su conocimiento, como un cálculo de ingeniería, en una herramienta digital útil para sus clientes.'
+  ],
+  [
+    'Comunicación clara',
+    'Explico la tecnología en lenguaje sencillo y la presento por el resultado que ofrece, no por el nombre de la herramienta.'
+  ],
+  [
+    'Documentación con propósito',
+    'Registro cada decisión junto con su motivo, para que cualquier proyecto pueda retomarse sin depender de la memoria de nadie.'
+  ],
+  [
+    'Calidad verificable',
+    'Pruebas automatizadas y revisiones de accesibilidad y rendimiento antes de publicar. Nada se da por hecho sin comprobarlo.'
+  ],
+  [
+    'Rigor con las fuentes y la privacidad',
+    'Contrasto la información con fuentes oficiales antes de publicarla y pido a los clientes solo los datos que de verdad se necesitan.'
+  ],
+  [
+    'Constancia y aprendizaje continuo',
+    'Convertí mi propia recuperación de una fractura en un proyecto para acompañar a otras personas, y sigo aprendiendo para resolver mejor cada problema nuevo.'
+  ]
+] as const;
 ---
 
 <BaseLayout
   title="Sobre mí"
-  description="Tecnología orientada a ampliar el alcance, mejorar el seguimiento y simplificar la gestión de negocios que ayudan a otros."
+  description="Perfil profesional de Luis Miguel Malacara Jiménez, ingeniero electromecánico: refrigeración y aire acondicionado, AutoCAD, automatización de procesos y desarrollo web."
 >
   <article class="editorial-page">
     <header class="page-intro page-intro--compact">
@@ -29,4 +90,79 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </p>
     </div>
   </article>
+
+  <section class="content-section" aria-labelledby="education-title">
+    <div class="section-heading section-heading--wide">
+      <div>
+        <p class="eyebrow">Formación</p>
+        <h2 id="education-title">Estudios</h2>
+      </div>
+      <p>La base técnica desde la que abordo cada proyecto.</p>
+    </div>
+    <ol class="capability-list">
+      <li>
+        <span>01</span>
+        <h3>Ingeniería Electromecánica</h3>
+        <p>Formación como ingeniero electromecánico, la base de mi trabajo en refrigeración y aire acondicionado.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="content-section" aria-labelledby="areas-title">
+    <div class="section-heading section-heading--wide">
+      <div>
+        <p class="eyebrow">Perfil profesional</p>
+        <h2 id="areas-title">Áreas de conocimiento</h2>
+      </div>
+      <p>Combino el conocimiento técnico de refrigeración y aire acondicionado con el desarrollo de software.</p>
+    </div>
+    <ol class="capability-list">
+      {areas.map(([title, description], index) => (
+        <li>
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          <h3>{title}</h3>
+          <p>{description}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="content-section" aria-labelledby="skills-title">
+    <div class="section-heading section-heading--wide">
+      <div>
+        <p class="eyebrow">Herramientas</p>
+        <h2 id="skills-title">Lenguajes, frameworks y software</h2>
+      </div>
+      <p>Las herramientas con las que construyo los proyectos publicados en este sitio.</p>
+    </div>
+    <div class="skill-groups">
+      {skills.map(({ title, label, items }) => (
+        <div>
+          <h3>{title}</h3>
+          <TagList tags={items} linked={false} label={label} />
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="content-section" aria-labelledby="strengths-title">
+    <div class="section-heading section-heading--wide">
+      <div>
+        <p class="eyebrow">Forma de trabajo</p>
+        <h2 id="strengths-title">Fortalezas y habilidades</h2>
+      </div>
+      <p>
+        Puedes ver cómo se aplican en los <a class="text-link" href="/live-projects/">proyectos publicados</a>.
+      </p>
+    </div>
+    <ol class="capability-list">
+      {strengths.map(([title, description], index) => (
+        <li>
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          <h3>{title}</h3>
+          <p>{description}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
 </BaseLayout>
